@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}{{titulo}}{% endblock %}
+
+{% block content %}
+
+
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Ano', 'Areal', 'Armação de Búzios', 'Miguel Pereira'],
+          ['2018', 1000, 400, 200],
+          ['2019', 1170, 460, 250],
+          ['2020', 660, 1120, 300],
+          ['2021', 1030, 540, 350]
+        ]);
+
+        var options = {
+          chart: {
+            title: 'Receitas Municipais',
+            subtitle: 'Fonte: Dados inventados',
+          }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      }
+    </script>
+  </head>
+  <body>
+    <h2>Paindel de Dados</h2>
+    <div id="columnchart_material" style="width: 800px; height: 500px;"></div>
+  </body>
+</html>
+
+{% endblock %}
