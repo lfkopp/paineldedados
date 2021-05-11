@@ -28,15 +28,31 @@
           }
         };
 
-        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+        var chart1 = new google.charts.Bar(document.getElementById('graph1'));
+        chart1.draw(data, google.charts.Bar.convertOptions(options));
 
-        chart.draw(data, google.charts.Bar.convertOptions(options));
+        
+        var chart2 = new google.charts.Bar(document.getElementById('graph2'));
+        chart2.draw(data, google.charts.Bar.convertOptions(options));
+
+                
+        var chart3 = new google.charts.Bar(document.getElementById('graph3'));
+        chart3.draw(data, google.charts.Bar.convertOptions(options));
+
+                
+        var chart4 = new google.charts.Bar(document.getElementById('graph4'));
+        chart4.draw(data, google.charts.Bar.convertOptions(options));
+
+        
       }
     </script>
   </head>
   <body>
     <h2>Paindel de Dados</h2>
-    <div id="columnchart_material" style="width: 800px; height: 500px;"></div>
+    <div id="graph1" style="width: 700px; height: 500px;"></div>
+    <div id="graph2" style="width: 700px; height: 500px;"></div>
+    <div id="graph3" style="width: 700px; height: 500px;"></div>
+    <div id="graph4" style="width: 700px; height: 500px;"></div>
   </body>
 </html>
 
