@@ -16,7 +16,7 @@ def educacao():
     return render_template('educacao.html')
 
 @app.route("/saude")
-def educacao():
+def saude():
     return render_template('saude.html')
 
 

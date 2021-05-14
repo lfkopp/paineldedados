@@ -109,6 +109,42 @@
         var chart2 = new google.charts.Bar(document.getElementById('graph2'));
         chart2.draw(data2, google.charts.Bar.convertOptions(options2));
 
+        var datax = google.visualization.arrayToDataTable([
+        ['Ano',   'Receita',  'Despesa'  ,   'Municipio'],
+        ['2010',   94100,  91528     , 'Areal'],
+        ['2011',   84122,  81528     , 'Areal'],
+        ['2012',   83274,  71528     , 'Areal'],
+        ['2013',   91528,  61528     , 'Areal'],
+        ['2014',   80807,  51528     , 'Areal'],
+        ['2010',   83431,  81528     , 'Araruama'],
+        ['2011',   81928,  71528     , 'Araruama'],
+        ['2012',   80051,  91528     , 'Araruama'],
+        ['2013',   89957,  51528     , 'Araruama'],
+        ['2014',   85645,  71528     , 'Araruama'],
+   ]); 
+ 
+ // Define a slider control for the 'Male Population' column
+ slider = new google.visualization.ControlWrapper({
+   'controlType': 'CategoryFilter',
+   'containerId': 'control1',
+   'options': {
+   'filterColumnLabel': 'Municipio',
+   'ui': {'allowMultiple': false}
+   }
+ });       
+   
+ // Define a pie chart
+ piechart = new google.visualization.ChartWrapper({
+   'chartType': 'LineChart',
+   'containerId': 'chart1',
+   'view': {'columns': [0, 1, 2]},
+  
+
+ });
+ 
+// Create the dashboard
+var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard'));
+dashboard.bind(slider, piechart).draw(datax);
 
       }
     </script>
