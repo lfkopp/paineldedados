@@ -9,7 +9,7 @@
   <head>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-      google.charts.load('current', {'packages':['bar','scatter']});
+      google.charts.load('current', {'packages':['corechart','bar','line','scatter','controls']});
       google.charts.setOnLoadCallback(drawChart);
 
 
@@ -30,6 +30,18 @@
             [	'Vassouras'	,	11127168083	,	10583826986	,	16639156133	,	19821799712	]
   
         ]);
+
+
+        var data1b = google.visualization.arrayToDataTable([
+        [	'ano'	,	 'Areal' 	,	 'Armação dos Búzios'  	,	 'Miguel Pereira'  	,	 'Paraíba do Sul'  	,	'Paty do Alferes' 	,	 'Quissamã'  	,	 'Rio das Flores'  	,	 'Sapucaia'  	,	'Saquarema' 	,	'Três Rios' 	,	 'Vassouras' 	],
+        [	 '2017'  	,	 4783158080  	,	 16443153163 	,	 6260717302  	,	 10483532384 	,	 7145100635  	,	 16706730969 	,	 4047960393  	,	 6865522479  	,	 21863481623 	,	 23313950655 	,	 11127168083 	],
+        [	 '2018'  	,	 5195713667  	,	 21239636499 	,	 7263077021  	,	 9375212386  	,	 6995097684  	,	 22253539704 	,	 6736979217  	,	 8098956657  	,	 27040879486 	,	 27515469500 	,	 10583826986 	],
+        [	 '2019'  	,	 4765322626  	,	 23683538339 	,	 13058516709 	,	 12177729071 	,	 11443587130 	,	 17200665868 	,	 6466816795  	,	 7606148319  	,	 27214627341 	,	 28035577153 	,	 16639156133 	],
+        [	 '2020' 	,	 null	,	 29162311709 	,	 13764444036 	,	 17000372386	,	 12324339920	,	 null 	,	 null 	,	 7339521065 	,	 null 	,	 null	,	 19821799712 	]
+        
+
+    ]);
+
 
         var data2 = google.visualization.arrayToDataTable([
             ['Municipio', '2017','2018','2019','2020'],
@@ -52,25 +64,25 @@
         data3.addColumn('number', 'municipio');
         data3.addColumn('number', '2019');
         data3.addColumn('number', '2020');
-
+        data3.addColumn({type: 'string', role: 'tooltip'});
         data3.addRows([
-          [0, 67, 63], [1, 88, 77], [2, 77, 76],
-          [3, 93, 85], [4, 85, 99], [5, 91, 74],
-          [6, 71, 85], [7, 78, 56], [8, 93, 87],
-          [9, 80, 93], [9, 82, 85], [0, 75, 67],
-          [5, 80, 83], [3, 90, 75], [1, 72, 86],
-          [5, 75, 67], [6, 68, 66], [7, 98, 97],
-          [3, 82, 86], [9, 94, 57], [2, 79, 56],
-          [2, 95, 93], [2, 86, 74], [3, 67, 87],
-          [4, 60, 67], [2, 80, 89], [6, 92, 88],
-          [2, 81, 84], [8, 79, 86], [9, 83, 77],
-          [3, 75, 84], [1, 80, 78], [3, 71, 66],
-          [3, 89, 73], [4, 92, 75], [5, 85, 78],
-          [6, 92, 53], [7, 78, 74], [6, 95, 97],
-          [3, 81, 83], [0, 64, 78], [4, 85, 87],
-          [2, 83, 68], [3, 96, 67], [4, 77, 69],
-          [5, 89, 96], [4, 89, 86], [7, 84, 79],
-          [4, 92, 99], [9, 98, 89]
+          [0, 67, 63,'q'], [1, 88, 77,'w'], [2, 77, 76,'e'],
+          [3, 93, 85,'q'], [4, 85, 99,'w'], [5, 91, 74,'e'],
+          [6, 71, 85,'q'], [7, 78, 56,'w'], [8, 93, 87,'e'],
+          [9, 80, 93,'q'], [9, 82, 85,'w'], [0, 75, 67,'e'],
+          [5, 80, 83,'q'], [3, 90, 75,'w'], [1, 72, 86,'e'],
+          [5, 75, 67,'q'], [6, 68, 66,'w'], [7, 98, 97,'e'],
+          [3, 82, 86,'q'], [9, 94, 57,'w'], [2, 79, 56,'e'],
+          [2, 95, 93,'q'], [2, 86, 74,'w'], [3, 67, 87,'e'],
+          [4, 60, 67,'q'], [2, 80, 89,'w'], [6, 92, 88,'e'],
+          [2, 81, 84,'q'], [8, 79, 86,'w'], [9, 83, 77,'e'],
+          [3, 75, 84,'q'], [1, 80, 78,'w'], [3, 71, 66,'e'],
+          [3, 89, 73,'q'], [4, 92, 75,'w'], [5, 85, 78,'e'],
+          [6, 92, 53,'q'], [7, 78, 74,'w'], [6, 95, 97,'e'],
+          [3, 81, 83,'q'], [0, 64, 78,'w'], [4, 85, 87,'e'],
+          [2, 83, 68,'q'], [3, 96, 67,'w'], [4, 77, 69,'e'],
+          [5, 89, 96,'q'], [4, 89, 86,'w'], [7, 84, 79,'e'],
+          [4, 92, 99,'q'], [9, 98, 89,'w']
         ]);
 
 
@@ -82,6 +94,7 @@
           }
         };
 
+
         var options2 = {
           chart: {
             title: 'Receitas Municipais',
@@ -90,25 +103,60 @@
         };
 
         var options3 = {
-          width: 800,
-          height: 500,
           chart: {
             title: 'Avaliação da Educacao',
             subtitle: 'Recursos gastos na educacao basica e rendimento escolar'
           },
-          hAxis: {title: 'Estudo'},
-          vAxis: {title: 'Gasto'}
+          hAxis: {title: 'Gasto por Aluno'},
+          vAxis: {title: 'Nota da avaliação'}
         };
 
         var chart1 = new google.charts.Bar(document.getElementById('graph1'));
         chart1.draw(data, google.charts.Bar.convertOptions(options));
-
         
+
         var chart2 = new google.charts.Bar(document.getElementById('graph2'));
         chart2.draw(data2, google.charts.Bar.convertOptions(options2));
 
-        var chart3 = new google.charts.Scatter(document.getElementById('scatterchart_material'));
+        var chart3 = new google.charts.Scatter(document.getElementById('graph3'));
         chart3.draw(data3, google.charts.Scatter.convertOptions(options3));
+
+        var datax = google.visualization.arrayToDataTable([
+             ['Ano', 'Municipio', 'Valor'],
+             ['2017',   'qqq', 94100],
+             ['5 to 9 years',    'qqq', 84122],
+             ['10 to 14 years',  'qqq', 83274],
+             ['15 to 19 years',  'qqq', 91528],
+             ['20 to 24 years',  'qqq', 108407],
+             ['25 to 29 years',  'www', 134931],
+             ['30 to 34 years',  'www', 119828],
+             ['35 to 39 years',  'www', 100651],
+             ['40 to 44 years',  'www', 89957],
+             ['45 to 49 years',  'www', 85645],
+             ['50 to 54 years',  'www', 80838],
+             ['55 to 59 years',  'www', 68441]
+        ]);
+      
+      // Define a slider control for the 'Male Population' column
+      slider = new google.visualization.ControlWrapper({
+        'controlType': 'NumberRangeFilter',
+        'containerId': 'control1',
+        'options': {
+        'filterColumnLabel': 'Male',
+        'ui': {'labelStacking': 'vertical'}
+        }
+      });       
+        
+      // Define a pie chart
+      piechart = new google.visualization.ChartWrapper({
+        'chartType': 'LineChart',
+        'containerId': 'chart1',
+
+      });
+      
+    // Create the dashboard
+    var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard'));
+    dashboard.bind(slider, piechart).draw(datax);
 
       }
     </script>
@@ -121,6 +169,16 @@
     <br>
     <div id="graph1" style="width: 80%; height: 500px;"></div>
 
+
+    <h3>Receitas Municipais</h3>
+    <br>
+    <p>Outro texto explciativo.</p> 
+    <br> 
+    <div id="dashboard">
+      <div id="control1"></div>                       
+      <div style="width: 80%; height: 500px;" id="chart1"></div>
+    </div>
+
     <h3>Receitas Municipais</h3>
     <br>
     <p>Outro texto explciativo.</p> 
@@ -131,7 +189,7 @@
     <br>
     <p>Mais outro texto explciativo.</p> 
     <br> 
-    <div id="scatterchart_material" style="width: 80%; height: 500px;"></div>
+    <div id="graph3" style="width: 80%; height: 500px;"></div>
    
   </body>
 </html>
