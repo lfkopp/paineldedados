@@ -7,6 +7,18 @@ app.secret_key = "meuSegred0"
 def home():
     return render_template('main.html')
 
+@app.route("/financas")
+def fincancas():
+    return render_template('financas.html')
+
+@app.route("/educacao")
+def educacao():
+    return render_template('educacao.html')
+
+@app.route("/saude")
+def educacao():
+    return render_template('saude.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True, threaded=True, port=5000)
