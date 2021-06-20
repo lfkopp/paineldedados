@@ -4,3 +4,13 @@ dnspython
 gunicorn
 requests
 pandas
+plotly
+dash==1.12.0
+xlrd
+pathlib
+flask_caching
+dash_auth
+unidecode
+scipy
+dash_daq
+sklearn

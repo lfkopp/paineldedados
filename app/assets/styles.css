@@ -1,0 +1,158 @@
+.js-plotly-plot .plotly .modebar {
+  padding-top: 5%;
+  margin-right: 3.5%;
+}
+
+body {
+  background-color: #ffffff;
+  margin: 5%;
+}
+
+.two.columns {
+  width: 16.25%;
+}
+
+.column,
+.columns {
+  margin-left: 0.5%;
+}
+
+.pretty_container {
+  border-radius: 5px;
+  background-color: #f5f5f5;
+  padding: 15px;
+  position: relative;
+  box-shadow: 2px 2px 2px lightgrey;
+}
+
+.bare_container {
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+}
+
+.dcc_control {
+  margin: 0;
+  padding: 5px;
+  width: calc(100%-40px);
+}
+
+.control_label {
+  margin: 0;
+  padding: 10px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  width: calc(100%-40px);
+}
+
+.rc-slider {
+  margin-left: 0px;
+  padding-left: 0px;
+}
+
+.flex-display {
+  display: flex;
+}
+
+.container-display {
+  display: flex;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  z-index:1;
+}
+
+#individual_graph,
+#aggregate_graph {
+  width: calc(100% - 30px);
+  position: absolute;
+}
+
+#count_graph {
+  position: absolute;
+  height: calc(100% - 30px);
+  width: calc(100% - 30px);
+}
+
+#countGraphContainer {
+  flex: 5;
+  position: relative;
+}
+
+#learn-more-button {
+  text-align: center;
+  height: 100%;
+  padding: 0 20px;
+  text-transform: none;
+  font-size: 15px;
+  float: right;
+  margin-right: 10px;
+  margin-top: 30px;
+}
+#title {
+  text-align: center;
+}
+
+.mini_container {
+  border-radius: 5px;
+  background-color: #f5f5f5;
+  margin: 10px;
+  padding: 15px;
+  position: relative;
+  box-shadow: 2px 2px 2px lightgrey;
+  text-align: center;
+}
+
+.tab {
+  border-radius: 5px;
+  background: #f1f1f1;
+  text-align: center;
+  height: 15px;
+  vertical-align: middle;
+  margin-bottom: 5px;
+}
+
+.selected-tab {
+  border-radius: 5px;
+  background: transparent;
+  text-align: center;
+  height: 15px;
+  vertical-align: middle;
+}
+
+#right-column {
+  display: flex;
+  flex-direction: column;
+}
+
+#aggregate_data {
+  align-items: center;
+}
+
+#tripleContainer {
+  display: flex;
+  flex: 3;
+}
+
+#mainContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.legenda-covidimetro {
+  font-weight: bold;
+  font-size: 12px;
+  padding: 8px;
+  text-align: center;
+  border-style: solid;
+  border-color: black;
+  border-radius: 10px;
+}
+
+.container-legenda-covidimetro {
+  text-align :left;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 10px
+}

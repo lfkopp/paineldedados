@@ -1,1 +1,1 @@
-web: gunicorn app:app --log-file=debug --timeout=45
+web: gunicorn run:server 
