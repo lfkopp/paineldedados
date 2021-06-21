@@ -19,7 +19,7 @@ from scipy.interpolate import interp1d
 from scipy.integrate import odeint
 from sklearn.linear_model import LinearRegression
 from unicodedata import normalize
-
+ 
 def remover_acentos(txt):
 	return normalize('NFKD', txt).encode('ASCII', 'ignore').decode('ASCII').upper()
 
@@ -30,7 +30,7 @@ PATH = pathlib.Path(__file__).parent
 px.set_mapbox_access_token("pk.eyJ1Ijoicm1jbnJpYmVpcm8iLCJhIjoiY2s4MHh5b3ZiMGtsbTNkcGFuazR1dWc4diJ9._aDTNPlmw3Nt6QSMm3YgmQ")
 
 # Data
-with open(PATH.joinpath('data/municipios_rj.json'),encoding='utf-8') as geojson:
+with open(PATH.joinpath('data/geojs-33-mun.json'),encoding='utf-8') as geojson:
     RJ_MUN_GEOJSON = json.load(geojson)
 
 
@@ -300,8 +300,13 @@ def graf3():
 							opacity=0.5,
 							animation_frame='ano',
 							labels={'IDHM':'IDH Municipal'},
-							title='Graf. 1 - índice de Desenvolvimento Humano Municipal do RJ'
                           )
+	fig.update_geos(fitbounds="locations",visible=False).update_layout(title={'text':'Graf. 1 - índice de Desenvolvimento Humano Municipal do RJ',
+				'x':0.5,
+				'yanchor': 'top'},
+				paper_bgcolor='#f5f5f5',
+				margin={'t':50,'b':40,'l':20,'r':20},
+				legend_orientation="h")
 	return fig
 
 @cache.memoize(timeout=timeout)  # in seconds
@@ -312,18 +317,17 @@ def graf4():
 							featureidkey = 'properties.name',
 							color="gini",
 							hover_name="nome",
-							color_continuous_scale="YlGn",
+							color_continuous_scale="YlGn_r",
 							range_color=(0.4, 0.65),
 							mapbox_style="carto-positron",
 							zoom=6, 
 							center=dict(lat=-22.158536, lon=-42.684229),
 							opacity=0.5,
 							animation_frame='ano',
-							labels={'gini':'GINI'}
+							labels={'gini':'GINI'},
                           )
 	
-	fig.update_geos(fitbounds="locations",
-		visible=False).update_layout(title={'text':'4 - Gini',
+	fig.update_geos(fitbounds="locations",visible=False).update_layout(title={'text':'Graf. 2 - índice de Gini dos Municípios do RJ',
 				'x':0.5,
 				'yanchor': 'top'},
 				paper_bgcolor='#f5f5f5',
