@@ -307,6 +307,7 @@ def graf3():
 				paper_bgcolor='#f5f5f5',
 				margin={'t':50,'b':40,'l':20,'r':20},
 				legend_orientation="h")
+	fig.layout['sliders'][0]['active'] = len(fig.layout['sliders'][0]['steps'])-1
 	return fig
 
 @cache.memoize(timeout=timeout)  # in seconds
@@ -333,6 +334,8 @@ def graf4():
 				paper_bgcolor='#f5f5f5',
 				margin={'t':50,'b':40,'l':20,'r':20},
 				legend_orientation="h")
+
+	fig.layout['sliders'][0]['active'] = len(fig.layout['sliders'][0]['steps'])-1
 	return fig
 
 

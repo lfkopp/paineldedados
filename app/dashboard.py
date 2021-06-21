@@ -32,7 +32,7 @@ base = html.Div([
         html.Div(children = [
                 html.Div([
                         html.Img(
-                            src = app.get_asset_url("observatorio.png"),
+                            src = app.get_asset_url("painel.png"),
                             id = "logo-image",
                             style = {
                                 "height": "80px",
@@ -190,7 +190,7 @@ html.Div([
                     "margin-bottom": "2px"
                 },
             ),
-        html.P(["Ariane"])
+        html.P(["Ariane Figueira"])
 
         ],
 
@@ -204,7 +204,7 @@ html.Div([
         html.Div([
             html.Img(
                     src = app.get_asset_url("Eduardo_Raupp.jpg"),
-                    id = "ariane-image",
+                    id = "eduardo-image",
                     style = {
                         "align": "center",
                         "height": "120px",
@@ -221,11 +221,11 @@ html.Div([
                 'margin-right': '4px'
         }
     ),
-
-            html.Div([
+    
+        html.Div([
             html.Img(
-                    src = app.get_asset_url("Marie_Anne.jpg"),
-                    id = "ariane-image",
+                    src = app.get_asset_url("Olavo-Diogo-150x150.jpg"),
+                    id = "olavo-image",
                     style = {
                         "align": "center",
                         "height": "120px",
@@ -233,7 +233,27 @@ html.Div([
                         "margin-bottom": "2px"
                     },
                 ),
-            html.P(["Marie Anne"])
+            html.P(["Olavo Diogo"])
+
+            ],
+            style = {
+                'margin-bottom': '10px',
+                'margin-left': '4px',
+                'margin-right': '4px'
+        }
+    ),
+            html.Div([
+            html.Img(
+                    src = app.get_asset_url("Marie_Anne.jpg"),
+                    id = "marie-image",
+                    style = {
+                        "align": "center",
+                        "height": "120px",
+                        "width": "auto",
+                        "margin-bottom": "2px"
+                    },
+                ),
+            html.P(["Marie Anne Macadar"])
 
             ],
             style = {
@@ -289,7 +309,7 @@ geral = html.Div([
                     [dcc.Graph(className = "graph", id = 'my-graph4', figure = graf4()),
                         html.P("O Índice de Gini é um instrumento para medir o grau de concentração de renda em determinado grupo. Ele aponta a diferença entre os rendimentos dos mais pobres e dos mais ricos. O valor zero representa a situação de igualdade, ou seja, todos têm a mesma renda. O valor um está no extremo oposto, isto é, uma só pessoa detém toda a riqueza."),
                         html.P("Na prática, o Índice de Gini costuma comparar os 20% mais pobres com os 20% mais ricos. No Relatório de Desenvolvimento Humano 2004, elaborado pelo Pnud, o Brasil aparece com Índice de 0,591, quase no final da lista de 127 países. Apenas sete nações apresentam maior concentração de renda."),
-                        html.P("Fonte: xxxx")
+                        html.P("Fonte: http://tabnet.datasus.gov.br/cgi/ibge/censo/cnv/ginirj.def")
                     ],
                     className = "pretty_container", style = {
                         'width': '50%',
