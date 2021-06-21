@@ -273,7 +273,38 @@ geral = html.Div([
     }
         ),
    
- 
+      html.Div(
+            [
+                html.Div(
+                    [html.H3("titulo xxx"),
+                    dcc.Graph(className = "graph", id = 'my-graph3', figure = graf3()),
+                        html.P("O Índice de Desenvolvimento Humano Municipal (IDHM) é uma medida composta de indicadores de três dimensões do desenvolvimento humano: longevidade, educação e renda. O índice varia de 0 a 1. Quanto mais próximo de 1, maior o desenvolvimento humano."),
+                        html.P("Fonte: xxxx")
+                    ],
+                    className = "pretty_container", style = {
+                        'width': '50%',
+                        'margin': '5px'
+                    }
+                ),
+                html.Div(
+                    [dcc.Graph(className = "graph", id = 'my-graph4', figure = graf4()),
+                        html.P("O Índice de Gini é um instrumento para medir o grau de concentração de renda em determinado grupo. Ele aponta a diferença entre os rendimentos dos mais pobres e dos mais ricos. O valor zero representa a situação de igualdade, ou seja, todos têm a mesma renda. O valor um está no extremo oposto, isto é, uma só pessoa detém toda a riqueza."),
+                        html.P("Na prática, o Índice de Gini costuma comparar os 20% mais pobres com os 20% mais ricos. No Relatório de Desenvolvimento Humano 2004, elaborado pelo Pnud, o Brasil aparece com Índice de 0,591, quase no final da lista de 127 países. Apenas sete nações apresentam maior concentração de renda."),
+                        html.P("Fonte: xxxx")
+                    ],
+                    className = "pretty_container", style = {
+                        'width': '50%',
+                        'margin': '5px'
+                    }
+                ),
+            ],
+            className = "row container-display",
+            style = {
+                'margin-bottom': '10px',
+                'margin-left': '-4px',
+                'margin-right': '-4px'
+            }
+        ),
         html.Div(
             [
                 html.Div(
@@ -299,37 +330,10 @@ geral = html.Div([
             style = {
                 'margin-bottom': '10px',
                 'margin-left': '-4px',
-                'margin-right': '-4px'
+                'margin-right': '-4px' 
             }
         ),
-        html.Div(
-            [
-                html.Div(
-                    [dcc.Graph(className = "graph", id = 'my-graph3', figure = graf3(dados_covid)),
-                        html.P("Distribuição de casos confirmados em cada município do Estado do Rio de Janeiro. Verifica-se uma concentração muito acima da média total na capital do estado, Rio de Janeiro.")
-                    ],
-                    className = "pretty_container", style = {
-                        'width': '50%',
-                        'margin': '5px'
-                    }
-                ),
-                html.Div(
-                    [dcc.Graph(className = "graph", id = 'my-graph4', figure = graf4(dados_covid)),
-                        html.P("Distribuição de casos confirmados com óbito em cada município do Estado do Rio de Janeiro. Verifica-se uma concentração acima da média total na capital do estado, Rio de Janeiro.")
-                    ],
-                    className = "pretty_container", style = {
-                        'width': '50%',
-                        'margin': '5px'
-                    }
-                ),
-            ],
-            className = "row container-display",
-            style = {
-                'margin-bottom': '10px',
-                'margin-left': '-4px',
-                'margin-right': '-4px'
-            }
-        ),
+   
         html.Div(
             [
                 html.Div(
@@ -404,19 +408,8 @@ def define_municipio(uf):
 
 @app.callback(
     [Output("total_confirmados","children"),
-    Output("total_obitos","children"),
-    Output("total_recuperados","children"),
-    Output("result_mun","children"),
-    Output("total_letal","children"),
-    Output("result_faixa","children"),
-    Output("result_sexo","children")],
-    [Input("filtro-sexo","value"),
-    Input("filtro-idade","value"),
-    Input("filtro-local","value"),
-    Input("filtro-classificacao","value"),
-    Input("filtro-data","date"),
-    Input("filtro-data2","date"),
-    Input("filtro-uf","value")]
+    Output("total_obitos","children")],
+    [Input("filtro-sexo","value")]
 )
 def update_info(sex,age,local,classificacao,data1,data2,uf):
     df = filtra_info(dados_covid,sex,age,local,classificacao,data1,data2,uf)
@@ -442,7 +435,7 @@ def update_info(sex,age,local,classificacao,data1,data2,uf):
     resumo_o = len(df.loc[(df['evolucaoCaso'] == 'OBITO') & (df['classificacaoFinal'] == 'CONFIRMADO')].index)
     resumo_r = len(df.loc[df['evolucaoCaso'] == 'RECUPERADO'].index)
     resumo_l = "{:.2f} %".format((len(df.loc[(df['evolucaoCaso'] == 'OBITO') & (df['classificacaoFinal'] == 'CONFIRMADO')].index)/len(df.loc[df['classificacaoFinal'] == 'CONFIRMADO'].index))*100).replace('.',',')
-    return (resumo_c,resumo_o,resumo_r,localidade_mun,resumo_l,idade,sexo)
+    return (resumo_c,resumo_o)
 
 @app.callback(
     [Output("my-graph5","figure")],

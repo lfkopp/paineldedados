@@ -14,3 +14,4 @@ unidecode
 scipy
 dash_daq
 sklearn
+unicodedata
