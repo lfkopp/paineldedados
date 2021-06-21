@@ -287,37 +287,31 @@ def graf2(df):
 @cache.memoize(timeout=timeout)  # in seconds
 def graf3():
 	dados_file = PATH.joinpath("data/IDHM.csv")
-	df = pd.read_csv(dados_file, sep=";",dtype={"id": str})
-	fig = px.choropleth_mapbox(df, geojson=RJ_MUN_GEOJSON, locations="municipio",
+	df = pd.read_csv(dados_file, sep=";",index_col=False)
+	fig = px.choropleth_mapbox(df, geojson=RJ_MUN_GEOJSON, locations="nome",
 							featureidkey = 'properties.name',
-							color="idhm",
-							hover_name="municipio",
-							color_continuous_scale="Viridis",
-							range_color=(.650, 750),
+							color="IDHM",
+							hover_name="nome",
+							color_continuous_scale="YlGn",
+							range_color=(.450, .800),
 							mapbox_style="open-street-map",
 							zoom=6, 
 							center=dict(lat=-22.158536, lon=-42.684229),
 							opacity=0.5,
-							labels={'idhm':'IDH Municipal'}
+							animation_frame='ano',
+							labels={'IDHM':'IDH Municipal'},
+							title='Graf. 1 - índice de Desenvolvimento Humano Municipal do RJ'
                           )
-	
-	fig.update_geos(fitbounds="locations",
-		visible=False).update_layout(title={'text':'3 - IDH Municipal',
-				'x':0.5,
-				'yanchor': 'top'},
-				paper_bgcolor='#f5f5f5',
-				margin={'t':50,'b':40,'l':20,'r':20},
-				legend_orientation="h")
 	return fig
 
 @cache.memoize(timeout=timeout)  # in seconds
 def graf4():
 	dados_file = PATH.joinpath("data/gini.csv")
-	df = pd.read_csv(dados_file, sep=";",dtype={"id": str})
+	df = pd.read_csv(dados_file, sep=";",dtype={"id": str},index_col=False)
 	fig = px.choropleth_mapbox(df, geojson=RJ_MUN_GEOJSON, locations="nome",
 							featureidkey = 'properties.name',
 							color="gini",
-							hover_name="municipio",
+							hover_name="nome",
 							color_continuous_scale="YlGn",
 							range_color=(0.4, 0.65),
 							mapbox_style="carto-positron",

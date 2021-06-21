@@ -276,10 +276,9 @@ geral = html.Div([
       html.Div(
             [
                 html.Div(
-                    [html.H3("titulo xxx"),
-                    dcc.Graph(className = "graph", id = 'my-graph3', figure = graf3()),
+                    [dcc.Graph(className = "graph", id = 'my-graph3', figure = graf3()),
                         html.P("O Índice de Desenvolvimento Humano Municipal (IDHM) é uma medida composta de indicadores de três dimensões do desenvolvimento humano: longevidade, educação e renda. O índice varia de 0 a 1. Quanto mais próximo de 1, maior o desenvolvimento humano."),
-                        html.P("Fonte: xxxx")
+                        html.P("Fonte: http://www.atlasbrasil.org.br/ranking")
                     ],
                     className = "pretty_container", style = {
                         'width': '50%',
@@ -309,7 +308,7 @@ geral = html.Div([
             [
                 html.Div(
                     [dcc.Graph(className = "graph", id = 'my-graph1', figure = scatter1(dados_covid)),
-                        html.P("Evolução do número de casos ao longo do tempo, comparando o acumulado total e novas ocorrências a cada dia. *Filtros aplicáveis.")
+                        html.P("xxxxxxxxx")
                     ],
                     className = "pretty_container", style = {
                         'width': '50%',
@@ -318,7 +317,7 @@ geral = html.Div([
                 ),
                 html.Div(
                     [dcc.Graph(className = "graph", id = 'my-graph2', figure = graf2(dados_covid)),
-                        html.P("Comparação da evolução no número de casos entre os municípios do Estado do Rio de Janeiro, em escala logarítmica pelo tempo. Apenas municípios com mais de 1000 casos notificados, independente da classificação.")
+                        html.P("xxxxxxx")
                     ],
                     className = "pretty_container", style = {
                         'width': '50%',
@@ -338,7 +337,7 @@ geral = html.Div([
             [
                 html.Div(
                     [dcc.Graph(className = "graph", id = 'my-graph5', figure = graf5(dados_covid)),
-                        html.P("Distribuição de casos notificados por idade. Verifica-se maior ocorrência na faixa etária dos 20 aos 60 anos, com maior predominância de casos entre mulheres. *Filtros aplicáveis.")
+                        html.P("xxxx")
                     ],
                     className = "pretty_container", style = {
                         'width': '50%',
@@ -347,7 +346,7 @@ geral = html.Div([
                 ),
                 html.Div(
                     [dcc.Graph(className = "graph", id = 'my-graph6', figure = graf6(dados_covid)),
-                        html.P("Distribuição de casos confirmados com óbito por idade.")
+                        html.P("xxxxxxx")
                     ],
                     className = "pretty_container", style = {
                         'width': '50%',
