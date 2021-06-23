@@ -11,6 +11,4 @@ pathlib
 flask_caching
 dash_auth
 unidecode
-scipy
 dash_daq
-sklearn

@@ -2,7 +2,7 @@
 import dash
 import flask
 from flask_caching import Cache
-import os
+
 
 # Supress Pandas Warnings
 import warnings
@@ -29,7 +29,3 @@ cache = Cache(app.server, config={
 
 timeout = 60
 
-@server.route('/update')
-def update():
-    os.system('. ~/web/update.sh')
-    return "<h1>Atualizando!</h1><br><a href='/'>Voltar para o Dashboard</a>"

@@ -6,15 +6,16 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import dash_daq as daq
 
+
 # Graph template
 pio.templates["covid"] = go.layout.Template(
     layout_annotations=[
         dict(
             name="ufrj",
-            text="UFRJ",
+            text="COPPEAD NUPEC",
             textangle=0,
             opacity=0.1,
-            font=dict(color="black", size=100),
+            font=dict(color="black", size=20),
             xref="paper",
             yref="paper",
             x=0.5,
@@ -85,8 +86,11 @@ base = html.Div([
         ),
         html.Div([
             dcc.Tabs(id='tab', value='tab-1', children=[
-                dcc.Tab(label='Informações Básicas', value='tab-1'),
-                dcc.Tab(label='Painel de Controle', value='tab-2'),
+                dcc.Tab(label='Página Inicial', value='tab-1'),
+                dcc.Tab(label='Dados Socioeconômicos', value='tab-2'),
+                dcc.Tab(label='Financeiro', value='tab-3'),
+                dcc.Tab(label='Royalties', value='tab-4'),
+                dcc.Tab(label='Outros links', value='tab-5'),
             ]),
             html.Div(id='tab-content')
         ]),
@@ -151,7 +155,7 @@ base = html.Div([
 
 # Tabs
 
-covidimetro = html.Div([
+pagina_inicial = html.Div([
 html.H3(["Cátedra NUPEC"]),
 html.Div([
         
@@ -178,6 +182,91 @@ html.Div([
 ),
 
 html.H3(["Equipe"]),
+html.H4(["Pesquisadores"]),
+html.Div([
+    html.Div([
+        html.Img(
+                src = app.get_asset_url("Ariane.jpg"),
+                id = "ariane-image",
+                title = 'Ariane Figueira',
+                style = {
+                    "align": "center",
+                        "height": "120px",
+                    "width": "auto",
+                    "margin-bottom": "2px"
+                },
+            ),
+        html.P(["Ariane Figueira"])],
+        style = {
+            'margin-bottom': '10px',
+            'margin-left': '4px',
+            'margin-right': '4px'
+        }
+    ),
+    
+        html.Div([
+            html.Img(
+                    src = app.get_asset_url("Eduardo_Raupp.jpg"),
+                    id = "eduardo-image",
+                    title = 'Eduardo Raupp',
+                    style = {
+                        "align": "center",
+                        "height": "120px",
+                        "width": "auto",
+                        "margin-bottom": "2px"
+                    },
+                ),
+            html.P(["Eduardo Raupp"])],
+            style = {
+                'margin-bottom': '10px',
+                'margin-left': '4px',
+                'margin-right': '4px'
+        }
+    ),
+    
+        html.Div([
+            html.Img(
+                    src = app.get_asset_url("Olavo-Diogo-150x150.jpg"),
+                    id = "olavo-image",
+                    title = 'Olavo Diogo',
+                    style = {
+                        "align": "center",
+                        "height": "120px",
+                        "width": "auto",
+                        "margin-bottom": "2px"
+                    },
+                ),
+            html.P(["Olavo Diogo"])],
+            style = {
+                'margin-bottom': '10px',
+                'margin-left': '4px',
+                'margin-right': '4px'
+        }
+    ),
+            html.Div([
+            html.Img(
+                    src = app.get_asset_url("Marie_Anne.jpg"),
+                    id = "marie-image",
+                    title = 'Marie Anne Macadar',
+                    style = {
+                        "align": "center",
+                        "height": "120px",
+                        "width": "auto",
+                        "margin-bottom": "2px"
+                    },
+                ),
+            html.P(["Marie Anne Macadar"])],
+            style = {
+                'margin-bottom': '10px',
+                'margin-left': '4px',
+                'margin-right': '4px'
+        }
+    )
+
+    ],className = "row container-display",
+),
+
+html.H4(["Outros"]),
 html.Div([
     html.Div([
         html.Img(
@@ -190,10 +279,7 @@ html.Div([
                     "margin-bottom": "2px"
                 },
             ),
-        html.P(["Ariane Figueira"])
-
-        ],
-
+        html.P(["xxxx"])],
         style = {
             'margin-bottom': '10px',
             'margin-left': '4px',
@@ -201,72 +287,17 @@ html.Div([
         }
     ),
     
-        html.Div([
-            html.Img(
-                    src = app.get_asset_url("Eduardo_Raupp.jpg"),
-                    id = "eduardo-image",
-                    style = {
-                        "align": "center",
-                        "height": "120px",
-                        "width": "auto",
-                        "margin-bottom": "2px"
-                    },
-                ),
-            html.P(["Eduardo Raupp"])
 
-            ],
-            style = {
-                'margin-bottom': '10px',
-                'margin-left': '4px',
-                'margin-right': '4px'
-        }
-    ),
     
-        html.Div([
-            html.Img(
-                    src = app.get_asset_url("Olavo-Diogo-150x150.jpg"),
-                    id = "olavo-image",
-                    style = {
-                        "align": "center",
-                        "height": "120px",
-                        "width": "auto",
-                        "margin-bottom": "2px"
-                    },
-                ),
-            html.P(["Olavo Diogo"])
-
-            ],
-            style = {
-                'margin-bottom': '10px',
-                'margin-left': '4px',
-                'margin-right': '4px'
-        }
-    ),
-            html.Div([
-            html.Img(
-                    src = app.get_asset_url("Marie_Anne.jpg"),
-                    id = "marie-image",
-                    style = {
-                        "align": "center",
-                        "height": "120px",
-                        "width": "auto",
-                        "margin-bottom": "2px"
-                    },
-                ),
-            html.P(["Marie Anne Macadar"])
-
-            ],
-            style = {
-                'margin-bottom': '10px',
-                'margin-left': '4px',
-                'margin-right': '4px'
-        }
-    )
 
     ],className = "row container-display",
-)])
+),
 
-geral = html.Div([
+html.H3(["Contato"]),
+html.P("Para entrar em contato, enviar email para xxxxxx.xxxx@xxxx.com.br")
+])
+
+dados_socioeconomicos = html.Div([
     html.Div([
             html.Div([
 
@@ -274,7 +305,8 @@ geral = html.Div([
                     id = "filtro-local",
                     multi = True,
                     placeholder = "Filtre por município",
-                    value = [],
+                    value = NUPEC,
+                    options=[{'label':name, 'value':name} for name in MUNICIPIOS],
                     style = {
                         'width': '100%',
                         'margin-left': '10px',
@@ -296,7 +328,7 @@ geral = html.Div([
       html.Div(
             [
                 html.Div(
-                    [dcc.Graph(className = "graph", id = 'my-graph3', figure = graf3()),
+                    [dcc.Graph(className = "graph", id = 'my-graph1', figure = graf1(NUPEC)),
                         html.P("O Índice de Desenvolvimento Humano Municipal (IDHM) é uma medida composta de indicadores de três dimensões do desenvolvimento humano: longevidade, educação e renda. O índice varia de 0 a 1. Quanto mais próximo de 1, maior o desenvolvimento humano."),
                         html.P("Fonte: http://www.atlasbrasil.org.br/ranking")
                     ],
@@ -306,9 +338,8 @@ geral = html.Div([
                     }
                 ),
                 html.Div(
-                    [dcc.Graph(className = "graph", id = 'my-graph4', figure = graf4()),
+                    [dcc.Graph(className = "graph", id = 'my-graph2', figure = graf2(NUPEC)),
                         html.P("O Índice de Gini é um instrumento para medir o grau de concentração de renda em determinado grupo. Ele aponta a diferença entre os rendimentos dos mais pobres e dos mais ricos. O valor zero representa a situação de igualdade, ou seja, todos têm a mesma renda. O valor um está no extremo oposto, isto é, uma só pessoa detém toda a riqueza."),
-                        html.P("Na prática, o Índice de Gini costuma comparar os 20% mais pobres com os 20% mais ricos. No Relatório de Desenvolvimento Humano 2004, elaborado pelo Pnud, o Brasil aparece com Índice de 0,591, quase no final da lista de 127 países. Apenas sete nações apresentam maior concentração de renda."),
                         html.P("Fonte: http://tabnet.datasus.gov.br/cgi/ibge/censo/cnv/ginirj.def")
                     ],
                     className = "pretty_container", style = {
@@ -324,64 +355,216 @@ geral = html.Div([
                 'margin-right': '-4px'
             }
         ),
-        html.Div(
-            [
-                html.Div(
-                    [dcc.Graph(className = "graph", id = 'my-graph1', figure = scatter1(dados_covid)),
-                        html.P("xxxxxxxxx")
-                    ],
-                    className = "pretty_container", style = {
-                        'width': '50%',
-                        'margin': '5px'
+      
+])
+
+
+
+financeiro = html.Div([
+    html.Div([
+                            html.Div([
+                            dcc.Dropdown(
+                                    id = "filtro-local-fin",
+                                    multi = True,
+                                    placeholder = "Filtre por município",
+                                    value = NUPEC,
+                                    options=[{'label':name, 'value':name} for name in MUNICIPIOS],
+                                    style = {
+                                        'width': '100%',
+                                        'margin-left': '10px',
+                                        'margin-right': '10px',
+                                        'z-index':10
+                                    },
+                                    disabled = False
+                                )
+                            ], id = 'filtros3', className = 'row flex-display', style = {
+                                'margin-top': '3px'
+                            })
+                        ],
+                        className = 'pretty_container sticky',
+                        id = 'filtros',
+                        style = {
+                            'text-align': 'left'
                     }
-                ),
-                html.Div(
-                    [dcc.Graph(className = "graph", id = 'my-graph2', figure = graf2(dados_covid)),
-                        html.P("xxxxxxx")
-                    ],
-                    className = "pretty_container", style = {
-                        'width': '50%',
-                        'margin': '5px'
-                    }
-                ),
-            ],
-            className = "row container-display",
-            style = {
-                'margin-bottom': '10px',
-                'margin-left': '-4px',
-                'margin-right': '-4px' 
-            }
-        ),
+                        ),
    
-        html.Div(
-            [
-                html.Div(
-                    [dcc.Graph(className = "graph", id = 'my-graph5', figure = graf5(dados_covid)),
-                        html.P("xxxx")
+      html.Div(  ##graficos
+            [       
+            html.Div([  ## primeira linha
+               
+                    html.Div([  ## grafico 1
+                 
+                           
+                                    dcc.Graph(className = "graph", id = 'my-graph-fin-1', figure = graf_fin_1(NUPEC)),
+
+                                                     html.Div([        ### dropddown
+                                dcc.Dropdown(
+                                        id = "filtro-funcao-fin",
+                                        multi = False,
+                                        placeholder = "Filtre por funcao",
+                                        value = 'Despesas Exceto Intraorçamentárias',
+                                        clearable=False,
+                                        options=[{'label':name, 'value':name} for name in financeiros],
+                                        style = {
+                                            'width': '100%',
+                                            'margin-left': '10px',
+                                            'margin-right': '10px',
+                                            'z-index':15
+                                        },
+                                        disabled = False
+                                    )
+                                ], id = 'filtros4', className = 'row flex-display', style = {
+                                    'margin-top': '3px'
+                        }),
+
+                                            html.P("xxxx"),
+                                            html.P("Fonte: xxx")
+                                        ],
+                                        className = "pretty_container", style = {
+                                            'width': '50%',
+                                            'margin': '5px'
+                                        }
+                                    ),
+                
+                html.Div([   ## grafico 2
+                     
+                     dcc.Graph(className = "graph", id = 'my-graph-fin-2', figure = graf_fin_2(NUPEC)),
+
+                     html.Div([      ### dropddown
+                                dcc.Dropdown(
+                                        id = "filtro-funcao1-fin",
+                                        multi = False,
+                                        placeholder = "Filtre por funcao",
+                                        value = '10 - Saúde',
+                                        clearable=False,
+                                        options=[{'label':name, 'value':name} for name in financeiros],
+                                        style = {
+                                            'width': '100%',
+                                            'margin-left': '10px',
+                                            'margin-right': '10px',
+                                            'z-index':15
+                                        },
+                                        disabled = False
+                                    ),
+                                dcc.Dropdown(
+                                        id = "filtro-funcao2-fin",
+                                        multi = False,
+                                        placeholder = "Filtre por funcao",
+                                        value = '12 - Educação',
+                                        clearable=False,
+                                        options=[{'label':name, 'value':name} for name in financeiros],
+                                        style = {
+                                            'width': '100%',
+                                            'margin-left': '10px',
+                                            'margin-right': '10px',
+                                            'z-index':15
+                                        },
+                                        disabled = False
+                                    )
+                                ], id = 'filtros6', className = 'row flex-display', style = {
+                                    'margin-top': '3px'
+                        }),
+
+                        html.P("xxxx"),
+                        html.P("Fonte: xxx")
                     ],
                     className = "pretty_container", style = {
                         'width': '50%',
                         'margin': '5px'
                     }
-                ),
-                html.Div(
-                    [dcc.Graph(className = "graph", id = 'my-graph6', figure = graf6(dados_covid)),
-                        html.P("xxxxxxx")
-                    ],
-                    className = "pretty_container", style = {
-                        'width': '50%',
-                        'margin': '5px'
-                    }
-                ),
-            ],
+                )
+                
+                ],
             className = "row container-display",
             style = {
                 'margin-bottom': '10px',
                 'margin-left': '-4px',
                 'margin-right': '-4px'
             }
-        )
+        ),
+      
 ])
+
+])
+
+royalties = html.Div([
+    html.Div([
+                            html.Div([
+                            dcc.Dropdown(
+                                    id = "filtro-local-roy",
+                                    multi = True,
+                                    placeholder = "Filtre por município",
+                                    value = NUPEC,
+                                    options=[{'label':name, 'value':name} for name in MUNICIPIOS],
+                                    style = {
+                                        'width': '100%',
+                                        'margin-left': '10px',
+                                        'margin-right': '10px',
+                                        'z-index':10
+                                    },
+                                    disabled = False
+                                )
+                            ], id = 'filtros3', className = 'row flex-display', style = {
+                                'margin-top': '3px'
+                            })
+                        ],
+                        className = 'pretty_container sticky',
+                        id = 'filtros',
+                        style = {
+                            'text-align': 'left'
+                    }
+                        ),
+   
+      html.Div(  ##graficos
+            [       
+            html.Div([  ## primeira linha
+               
+                    html.Div([  ## grafico 1
+                 
+                           
+                                    dcc.Graph(className = "graph", id = 'my-graph-roy-1', figure = graf_roy_1(NUPEC)),
+
+  
+                                            html.P("xxxx"),
+                                            html.P("Fonte: xxx")
+                                        ],
+                                        className = "pretty_container", style = {
+                                            'width': '50%',
+                                            'margin': '5px'
+                                        }
+                                    ),
+
+                                                    html.Div([  ## grafico 2
+                 
+                           
+                                    dcc.Graph(className = "graph", id = 'my-graph-roy-2', figure = graf_roy_2(NUPEC)),
+
+  
+                                            html.P("xxxx"),
+                                            html.P("Fonte: xxx")
+                                        ],
+                                        className = "pretty_container", style = {
+                                            'width': '50%',
+                                            'margin': '5px'
+                                        }
+                                    ),
+                
+                 
+                ],
+            className = "row container-display",
+            style = {
+                'margin-bottom': '10px',
+                'margin-left': '-4px',
+                'margin-right': '-4px'
+            }
+        ),
+      
+])
+
+])
+
+
+outros_links = html.Div([html.H3(["Outros links"])])
 
 # index layout
 app.layout = base
@@ -389,90 +572,46 @@ app.layout = base
 # "complete" layout
 app.validation_layout = html.Div([
     base,
-    covidimetro,
-    geral
+    pagina_inicial,
+    dados_socioeconomicos, 
+    financeiro, 
+    royalties,
+    outros_links
 ])
 
 # Callbacks
 
-@app.callback(Output('tab-content', 'children'),
-              [Input('tab', 'value')])
+@app.callback(Output('tab-content', 'children'),[Input('tab', 'value')])
 def render_content(tab):
     if tab == 'tab-1':
-        return covidimetro
+        return pagina_inicial
     elif tab == 'tab-2':
-        return geral
+        return dados_socioeconomicos
+    elif tab == 'tab-3':
+        return financeiro
+    elif tab == 'tab-4':
+        return royalties
+    elif tab == 'tab-5':
+        return outros_links
 
-@app.callback(
-    [Output("filtro-local","options"),
-    Output("filtro-local","disabled")],
-    [Input("filtro-uf","value")]
-)
-def define_municipio(uf):
-    if len(uf) != 0:
-        df = dados_covid.loc[dados_covid['estado'].isin(uf)]
-        municipios = []
-        numMunicipios = len(RJ_MUN_GEOJSON["features"])
-        for i in range(numMunicipios):
-            municipios.append(RJ_MUN_GEOJSON["features"][i]["properties"]["name"])
-        options=[
-            {"label": str(cidade),"value": str((unidecode.unidecode(cidade)).upper())}
-            for cidade in municipios
-        ]
-        disab = False
-    else:
-        options = []
-        disab = True
-    return options,disab
+@app.callback([Output('my-graph1','figure'),Output('my-graph2','figure')],[Input('filtro-local','value')])
+def update_graph1(local):
+    return graf1(local), graf2(local)
 
-@app.callback(
-    [Output("total_confirmados","children"),
-    Output("total_obitos","children")],
-    [Input("filtro-sexo","value")]
-)
-def update_info(sex,age,local,classificacao,data1,data2,uf):
-    df = filtra_info(dados_covid,sex,age,local,classificacao,data1,data2,uf)
-    age.sort()
-    localidade_uf = "RJ"
-    if len(local) != 0:
-        localidade_mun = ", ".join(local)
-        if len(local) == 1:
-            localidade_mun = local[:]
-    else:
-        localidade_mun = "Todos os municípios"
-    if len(sex) != 0:
-        sexo = ", ".join(sex)
-    else:
-        sexo = "-"
-    if len(age) != 0:
-        idade = str(int(age[0][0:2]))+" a "+str(int(age[-1][-2:]))
-        if age[-1] == '6060':
-            idade = str(int(age[0][0:2]))+" a 60+"
-    else:
-        idade = "-"
-    resumo_c = len(df.loc[df['classificacaoFinal'] == 'CONFIRMADO'].index)
-    resumo_o = len(df.loc[(df['evolucaoCaso'] == 'OBITO') & (df['classificacaoFinal'] == 'CONFIRMADO')].index)
-    resumo_r = len(df.loc[df['evolucaoCaso'] == 'RECUPERADO'].index)
-    resumo_l = "{:.2f} %".format((len(df.loc[(df['evolucaoCaso'] == 'OBITO') & (df['classificacaoFinal'] == 'CONFIRMADO')].index)/len(df.loc[df['classificacaoFinal'] == 'CONFIRMADO'].index))*100).replace('.',',')
-    return (resumo_c,resumo_o)
 
-@app.callback(
-    [Output("my-graph5","figure")],
-    [Input("filtro-local","value"),
-    Input("filtro-classificacao","value"),
-    Input("filtro-data","date"),
-    Input("filtro-data2","date")]
-)
-def update_graphs(local,classificacao,data1,data2):
-    df = filtra_graph(dados_covid,local,classificacao,data1,data2)
-    return [graf5(df)]
+@app.callback(Output('my-graph-fin-1','figure'),[Input('filtro-local-fin','value'),Input('filtro-funcao-fin','value')])
+def update_graph_fin_1(local,funcao):
+    return graf_fin_1(local,funcao)
 
-@app.callback(
-    Output('my-graph1','figure'),
-    [Input('filtro-local','value')])
+@app.callback(Output('my-graph-fin-2','figure'),[Input('filtro-local-fin','value'),Input('filtro-funcao1-fin','value'),Input('filtro-funcao2-fin','value')])
+def update_graph_fin_2(local,funcao1,funcao2):
+    return graf_fin_2(local,funcao1,funcao2)
 
-def update_scatter1(idade,sexo,uf,mun):
-    df = filtra_scatter(dados_covid,mun)
-    return scatter1(df)
+@app.callback(Output('my-graph-roy-1','figure'),[Input('filtro-local-roy','value')])
+def update_graph_roy_1(local):
+    return graf_roy_1(local)
 
+@app.callback(Output('my-graph-roy-2','figure'),[Input('filtro-local-roy','value')])
+def update_graph_roy_2(local):
+    return graf_roy_2(local)
 
