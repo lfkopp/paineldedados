@@ -135,7 +135,7 @@ def graf_roy_2(local):
 	return fig  
 
 def outroslinks(html,app):
-	result = []
+	result = [] 
 	result.append(html.Hr())
 
 	for line in OUTROS.iterrows():
