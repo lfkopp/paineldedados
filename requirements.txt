@@ -12,3 +12,4 @@ flask_caching
 dash_auth
 unidecode
 dash_daq
+statsmodels 

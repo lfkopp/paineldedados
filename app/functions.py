@@ -25,6 +25,10 @@ FINBRA_ = PATH.joinpath("data/finbra_desp.csv")
 FINBRA = pd.read_csv(FINBRA_, sep=";",index_col=False)
 ROYALTIES_ = PATH.joinpath("data/royalties.csv")
 ROYALTIES = pd.read_csv(ROYALTIES_, sep=";",index_col=False)
+
+OUTROS_ = PATH.joinpath("data/outroslinks.xlsx")
+OUTROS = pd.read_excel(OUTROS_)
+
 # Create MUNICIPIOS
 MUNICIPIOS = []
 NUM_MUN = len(RJ_MUN_GEOJSON["features"])
@@ -111,7 +115,7 @@ def graf_fin_2(local="",funcao1="10 - Saúde", funcao2="12 - Educação"):
 	if (type(local) == list) and (len(local)>0):
 		local2 = [remover_acentos(x) for x in local]
 		df = df.loc[df['municipio'].isin(local2)]
-	fig =  px.scatter(df, x=funcao1, y=funcao2, color="municipio", hover_data=['municipio','ano'], title="Graf. 2 - Correlação entre dois tipos de Despesas")
+	fig =  px.scatter(df, x=funcao1, y=funcao2, color="municipio", trendline="ols", hover_data=['municipio','ano'], title="Graf. 2 - Correlação entre dois tipos de Despesas")
 	return fig  
 
 def graf_roy_1(local):
@@ -119,11 +123,49 @@ def graf_roy_1(local):
 	if (type(local) == list) and (len(local)>0):
 		df = df.loc[df['municipio'].isin(local)]
 	fig =  px.line(df, x='ano', y='Royalties', color="municipio", hover_data=['municipio','ano'], title="Graf. 1 - Evolução Anual de Royalties")
+	fig.update_layout(xaxis = dict(tickmode = 'linear',dtick = 1))
 	return fig  
 
 def graf_roy_2(local):
 	df = ROYALTIES
 	if (type(local) == list) and (len(local)>0):
 		df = df.loc[df['municipio'].isin(local)]
-	fig =  px.line(df, x='ano', y='royalties per capita', color="municipio", hover_data=['municipio','ano'], title="Graf. 2 - Evolução Anual de Royalties per capita")
+	fig =  px.line(df, x='ano', y='royalties per capita',  color="municipio", hover_data=['municipio','ano'], title="Graf. 2 - Evolução Anual de Royalties per capita")
+	fig.update_layout(xaxis = dict(tickmode = 'linear',dtick = 1))
 	return fig  
+
+def outroslinks(html,app):
+	result = []
+	result.append(html.Hr())
+
+	for line in OUTROS.iterrows():
+		print()
+		result.append(    
+			html.Div([   ## primeiro frame
+        
+       		html.Div([html.P(html.Img(src=app.get_asset_url("outroslinks/"+i), width=300)) for i in line[1]['imagens'].split(',')]),
+
+        	html.Div([html.H4(html.A([line[1]['local']], target='_blank', href=line[1]['link'], style={"color": "red", "text-decoration": "none"})),
+					html.Div( [html.P(x) for x in line[1]['descricao'].split('\n')] )
+						],
+
+            style = {
+                'margin-bottom': '10px',
+                'margin-left': '40px',
+                'margin-right': '4px'
+            }
+					
+					),
+
+			
+        
+        ],
+        className = "row container-display",
+            style = {
+                'margin-bottom': '10px',
+                'margin-left': '4px',
+                'margin-right': '-4px'
+            }))
+		result.append(html.Hr())
+	return result
+ 

@@ -564,7 +564,12 @@ royalties = html.Div([
 ])
 
 
-outros_links = html.Div([html.H3(["Outros links"])])
+outros_links = html.Div([html.H3(["Outros links"]),
+
+html.Div(outroslinks(html,app))
+
+
+])
 
 # index layout
 app.layout = base
