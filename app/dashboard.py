@@ -99,8 +99,8 @@ base = html.Div([
                         html.Div([
                                 html.P("Desenvolvido por"),
                                 html.A(html.Img(
-                                        src = app.get_asset_url("labnet.jpeg"),
-                                        id = "labnet-image",
+                                        src = app.get_asset_url("catedra_nupec.png"),
+                                        id = "catedra-image",
                                         style = {
                                             "height": "40px",
                                             "width": "auto",
@@ -108,7 +108,7 @@ base = html.Div([
                                             "margin-right": "5px"
                                         }
                                     ),
-                                    href = "http://labnet.nce.ufrj.br/")
+                                    href = "https://paineldedados.herokuapp.com/")
                             ],
                             className = "one-half column",
                             style = {
