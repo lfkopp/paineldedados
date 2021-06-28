@@ -119,7 +119,7 @@ def graf_fin_2(local="",funcao1="10 - Saúde", funcao2="12 - Educação"):
 	return fig  
 
 def graf_roy_1(local):
-	df = ROYALTIES
+	df = ROYALTIES 
 	if (type(local) == list) and (len(local)>0):
 		df = df.loc[df['municipio'].isin(local)]
 	fig =  px.line(df, x='ano', y='Royalties', color="municipio", hover_data=['municipio','ano'], title="Graf. 1 - Evolução Anual de Royalties")
