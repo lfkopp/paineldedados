@@ -143,7 +143,7 @@ def outroslinks(html,app):
 		result.append(    
 			html.Div([   ## primeiro frame
         
-       		html.Div([html.P(html.Img(src=app.get_asset_url("outroslinks/"+i), width=300)) for i in line[1]['imagens'].split(',') if i != '-' else html.P("Imagem indisponível")]),
+       		html.Div([html.P(html.Img(src=app.get_asset_url("outroslinks/"+i), width=300)) for i in line[1]['imagens'].split(',') ]),
 
         	html.Div([html.H4(html.A([line[1]['local']], target='_blank', href=line[1]['link'], style={"color": "red", "text-decoration": "none"})),
 					html.Div( [html.P(x) for x in line[1]['descricao'].split('\n')] )
