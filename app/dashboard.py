@@ -108,7 +108,7 @@ base = html.Div([
                                             "margin-right": "5px"
                                         }
                                     ),
-                                    href = "https://paineldedados.herokuapp.com/")
+                                    href = "http://paineldedados.herokuapp.com/")
                             ],
                             className = "one-half column",
                             style = {
@@ -268,10 +268,12 @@ html.Div([
 
 html.H4(["Outros"]),
 html.Div([
+
+
     html.Div([
         html.Img(
                 src = app.get_asset_url("Ariane.jpg"),
-                id = "ariane-image",
+                id = "kopp-image",
                 style = {
                     "align": "center",
                         "height": "120px",
@@ -279,16 +281,70 @@ html.Div([
                     "margin-bottom": "2px"
                 },
             ),
-        html.P(["xxxx"])],
+        html.P(["Luis Filipe Kopp"])],
         style = {
             'margin-bottom': '10px',
             'margin-left': '4px',
             'margin-right': '4px'
         }
     ),
-    
 
-    
+        html.Div([
+        html.Img(
+                src = app.get_asset_url("Ariane.jpg"),
+                id = "helena-image",
+                style = {
+                    "align": "center",
+                        "height": "120px",
+                    "width": "auto",
+                    "margin-bottom": "2px"
+                },
+            ),
+        html.P(["Helena"])],
+        style = {
+            'margin-bottom': '10px',
+            'margin-left': '4px',
+            'margin-right': '4px'
+        }
+    ),
+
+        html.Div([
+        html.Img(
+                src = app.get_asset_url("Ariane.jpg"),
+                id = "vanessa-image",
+                style = {
+                    "align": "center",
+                        "height": "120px",
+                    "width": "auto",
+                    "margin-bottom": "2px"
+                },
+            ),
+        html.P(["Vanessa"])],
+        style = {
+            'margin-bottom': '10px',
+            'margin-left': '4px',
+            'margin-right': '4px'
+        }
+    ),    
+
+    html.Div([
+        html.Img(
+                src = app.get_asset_url("Ariane.jpg"),
+                id = "matheus-image",
+                style = {
+                    "align": "center",
+                        "height": "120px",
+                    "width": "auto",
+                    "margin-bottom": "2px"
+                },
+            ),
+        html.P(["Matheus"])],
+        style = {
+            'margin-bottom': '10px',
+            'margin-left': '4px',
+            'margin-right': '4px'
+        }
+    ),
 
     ],className = "row container-display",
 ),
