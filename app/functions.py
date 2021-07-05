@@ -23,8 +23,13 @@ with open(PATH.joinpath('data/geojs-33-mun.json'),encoding='utf-8') as geojson:
 
 FINBRA_ = PATH.joinpath("data/finbra_desp.csv")
 FINBRA = pd.read_csv(FINBRA_, sep=";",index_col=False)
+
 ROYALTIES_ = PATH.joinpath("data/royalties.csv")
 ROYALTIES = pd.read_csv(ROYALTIES_, sep=";",index_col=False)
+
+POP_ = PATH.joinpath("data/populacao.csv")
+POP = pd.read_csv(POP_, sep=";",index_col=False)
+
 
 OUTROS_ = PATH.joinpath("data/outroslinks.xlsx")
 OUTROS = pd.read_excel(OUTROS_)
@@ -46,7 +51,9 @@ financeiros = ["Despesas Exceto Intraorçamentárias","01 - Legislativa","04 - A
 # Graphs
 
 #@cache.memoize(timeout=timeout)  # in seconds
-def graf1(local=""):
+def graf1(local=NUPEC):
+	if 'NUPEC' in local:
+		local = list(set(list(NUPEC) + list(local)))
 	dados_file = PATH.joinpath("data/IDHM.csv")
 	df = pd.read_csv(dados_file, sep=";",index_col=False)
 	if (type(local) == list) and (len(local)>0):
@@ -73,7 +80,9 @@ def graf1(local=""):
 	return fig
  
 #@cache.memoize(timeout=timeout)  # in seconds
-def graf2(local=""):
+def graf2(local=NUPEC):
+	if 'NUPEC' in local:
+		local = list(set(list(NUPEC) + list(local)))
 	dados_file = PATH.joinpath("data/gini.csv")
 	df = pd.read_csv(dados_file, sep=";",dtype={"id": str},index_col=False)
 	if (type(local) == list) and (len(local)>0):
@@ -99,6 +108,46 @@ def graf2(local=""):
 	fig.layout['sliders'][0]['active'] = len(fig.layout['sliders'][0]['steps'])-1
 	return fig
 
+#@cache.memoize(timeout=timeout) 
+def graf3(local=NUPEC):
+	if 'NUPEC' in local:
+		local = list(set(list(NUPEC) + list(local)))
+	df = POP 
+	if (type(local) == list) and (len(local)>0):
+		df = df.loc[df['municipio'].isin(local)]
+	fig = px.choropleth_mapbox(df, geojson=RJ_MUN_GEOJSON, locations="municipio",
+							featureidkey = "properties.name",
+							color="populacao",
+							hover_name="municipio",
+							color_continuous_scale="YlGn",
+							#range_color=(0.4, 0.65),
+							mapbox_style="carto-positron",
+							zoom=6, center=dict(lat=-22.158536, lon=-42.684229),
+							opacity=0.5,
+							animation_frame='ano',
+							labels={'populacao':'populacao'},
+							)
+	fig.update_geos(fitbounds="locations",visible=False).update_layout(title={'text':'Graf. 3 - População dos Municípios do RJ',
+							'x':0.75,
+							'yanchor': 'top'},
+							paper_bgcolor='#f5f5f5',
+							margin={'t':50,'b':40,'l':20,'r':20},
+							legend_orientation="h")
+
+	fig.layout['sliders'][0]['active'] = len(fig.layout['sliders'][0]['steps'])-1
+	return fig
+
+#@cache.memoize(timeout=timeout) 
+def graf4(local=NUPEC):
+	if 'NUPEC' in local:
+		local = list(set(list(NUPEC) + list(local)))
+	df = POP
+	if (type(local) == list) and (len(local)>0):
+		df = df.loc[df['municipio'].isin(local)]
+	fig =  px.scatter(df, x='ano', y='populacao', color="municipio", trendline="ols", hover_data=['municipio','ano'], title="Graf. 4 - ano pop")
+	fig.update_layout(paper_bgcolor='#f5f5f5')
+	return fig  
+
 
 #@cache.memoize(timeout=timeout)  # in seconds
 def graf_fin_1(local="",funcao="Despesas Exceto Intraorçamentárias"):
@@ -108,7 +157,7 @@ def graf_fin_1(local="",funcao="Despesas Exceto Intraorçamentárias"):
 		df = df.loc[df['municipio'].isin(local2)]
 	fig =  px.line(df, x="ano", y=funcao, color='municipio', title="Graf. 1 - Evolução Anual de Despesas")
 	return fig
-
+ 
 
 def graf_fin_2(local="",funcao1="10 - Saúde", funcao2="12 - Educação"):
 	df = FINBRA

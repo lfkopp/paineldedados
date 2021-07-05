@@ -361,8 +361,8 @@ dados_socioeconomicos = html.Div([
                     id = "filtro-local",
                     multi = True,
                     placeholder = "Filtre por município",
-                    value = NUPEC,
-                    options=[{'label':name, 'value':name} for name in MUNICIPIOS],
+                    value = 'NUPEC',
+                    options=[{'label':name, 'value':name} for name in MUNICIPIOS]+[{'label':'NUPEC', 'value':'NUPEC'}],
                     style = {
                         'width': '100%',
                         'margin-left': '10px',
@@ -384,7 +384,7 @@ dados_socioeconomicos = html.Div([
       html.Div(
             [
                 html.Div(
-                    [dcc.Graph(className = "graph", id = 'my-graph1', figure = graf1(NUPEC)),
+                    [dcc.Graph(className = "graph", id = 'my-graph1', figure = graf1('NUPEC')),
                         html.P("O Índice de Desenvolvimento Humano Municipal (IDHM) é uma medida composta de indicadores de três dimensões do desenvolvimento humano: longevidade, educação e renda. O índice varia de 0 a 1. Quanto mais próximo de 1, maior o desenvolvimento humano."),
                         html.P("Fonte: http://www.atlasbrasil.org.br/ranking")
                     ],
@@ -394,7 +394,7 @@ dados_socioeconomicos = html.Div([
                     }
                 ),
                 html.Div(
-                    [dcc.Graph(className = "graph", id = 'my-graph2', figure = graf2(NUPEC)),
+                    [dcc.Graph(className = "graph", id = 'my-graph2', figure = graf2('NUPEC')),
                         html.P("O Índice de Gini é um instrumento para medir o grau de concentração de renda em determinado grupo. Ele aponta a diferença entre os rendimentos dos mais pobres e dos mais ricos. O valor zero representa a situação de igualdade, ou seja, todos têm a mesma renda. O valor um está no extremo oposto, isto é, uma só pessoa detém toda a riqueza."),
                         html.P("Fonte: http://tabnet.datasus.gov.br/cgi/ibge/censo/cnv/ginirj.def")
                     ],
@@ -412,6 +412,36 @@ dados_socioeconomicos = html.Div([
             }
         ),
       
+            html.Div(
+            [
+                html.Div(
+                    [dcc.Graph(className = "graph", id = 'my-graph3', figure = graf3('NUPEC')),
+                        html.P("A população...."),
+                        html.P("Fonte: https://www.ibge.gov.br/estatisticas/sociais/populacao/9109-projecao-da-populacao.html?=&t=downloads")
+                    ],
+                    className = "pretty_container", style = {
+                        'width': '50%',
+                        'margin': '5px'
+                    }
+                ),
+                html.Div(
+                    [dcc.Graph(className = "graph", id = 'my-graph4', figure = graf4('NUPEC')),
+                        html.P("xx"),
+                        html.P("Fonte: xx")
+                    ],
+                    className = "pretty_container", style = {
+                        'width': '50%',
+                        'margin': '5px'
+                    }
+                ),
+            ],
+            className = "row container-display",
+            style = {
+                'margin-bottom': '10px',
+                'margin-left': '-4px',
+                'margin-right': '-4px'
+            }
+        ),
 ])
 
 
@@ -655,9 +685,9 @@ def render_content(tab):
     elif tab == 'tab-5':
         return outros_links
 
-@app.callback([Output('my-graph1','figure'),Output('my-graph2','figure')],[Input('filtro-local','value')])
+@app.callback([Output('my-graph1','figure'),Output('my-graph2','figure'),Output('my-graph3','figure'),Output('my-graph4','figure')],[Input('filtro-local','value')])
 def update_graph1(local):
-    return graf1(local), graf2(local)
+    return graf1(local), graf2(local), graf3(local), graf4(local)
 
 
 @app.callback(Output('my-graph-fin-1','figure'),[Input('filtro-local-fin','value'),Input('filtro-funcao-fin','value')])
