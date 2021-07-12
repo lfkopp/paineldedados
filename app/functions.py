@@ -183,6 +183,23 @@ def graf_roy_2(local):
 	fig.update_layout(xaxis = dict(tickmode = 'linear',dtick = 1))
 	return fig  
 
+def graf_ods_1(local):
+	df = ROYALTIES
+	if (type(local) == list) and (len(local)>0):
+		df = df.loc[df['municipio'].isin(local)]
+	fig =  px.density_heatmap(df, x='ano', z='royalties per capita',  y="municipio", hover_data=['municipio','ano'], title="Graf. 1 - Metas ODS")
+	fig.update_layout(xaxis = dict(tickmode = 'linear',dtick = 1))
+	return fig  
+
+def graf_ods_2(local):
+	df = ROYALTIES
+	if (type(local) == list) and (len(local)>0):
+		df = df.loc[df['municipio'].isin(local)]
+	fig =  px.density_heatmap(df, x='ano', z='royalties per capita',  y="municipio", hover_data=['municipio','ano'], title="Graf. 1 - Metas ODS")
+	fig.update_layout(xaxis = dict(tickmode = 'linear',dtick = 1))
+	return fig  
+
+
 def outroslinks(html,app):
 	result = [] 
 	result.append(html.Hr())

@@ -19,7 +19,7 @@ app = dash.Dash(
     url_base_pathname='/'
 )
 
-app.title = "Painel de Dados das Cidades - Rio de Janeiro"
+app.title = "Painel de Gestão Local - Rio de Janeiro"
 
 # Cache settings
 cache = Cache(app.server, config={
