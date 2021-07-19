@@ -91,7 +91,8 @@ base = html.Div([
                 dcc.Tab(label='Financeiro', value='tab-3'),
                 dcc.Tab(label='Royalties', value='tab-4'),
                 dcc.Tab(label='Desenvolvimento Sustentável', value='tab-5'),
-                dcc.Tab(label='Outros links', value='tab-6'),
+                dcc.Tab(label='Saúde & COVID19', value='tab-6'),
+                dcc.Tab(label='Outros links', value='tab-7'),
             ]),
             html.Div(id='tab-content')
         ]),
@@ -726,6 +727,95 @@ ods = html.Div([
 
 ])
 
+saude = html.Div([
+    html.Div([
+                            html.Div([
+                            dcc.Dropdown(
+                                    id = "filtro-local-saude",
+                                    multi = True,
+                                    placeholder = "Filtre por município",
+                                    value = NUPEC,
+                                    options=[{'label':name, 'value':name} for name in MUNICIPIOS],
+                                    style = {
+                                        'width': '100%',
+                                        'margin-left': '10px',
+                                        'margin-right': '10px',
+                                        'z-index':10
+                                    },
+                                    disabled = False
+                                )
+                            ], id = 'filtros_ods', className = 'row flex-display', style = {
+                                'margin-top': '3px'
+                            })
+                        ],
+                        className = 'pretty_container sticky',
+                        id = 'filtros',
+                        style = {
+                            'text-align': 'left'
+                    }
+                        ),
+   
+      html.Div(  ##graficos
+            [       
+            html.Div([  ## primeira linha
+               
+                    html.Div([  ## grafico 1
+       
+                           
+                                    dcc.Graph(className = "graph", id = 'my-graph-saude-1', figure = graf_saude_1(NUPEC)),
+
+  
+                                            html.P("xxxx"), 
+                                            html.P("Fonte: xxx")
+                                        ],
+                                        className = "pretty_container", style = {
+                                            'width': '50%',
+                                            'margin': '5px'
+                                        }
+                                    ),
+
+                                                    html.Div([  ## grafico 2
+                 
+                                     dcc.Dropdown( 
+                                        id = "filtro-funcao-saude",
+                                        multi = False,
+                                        placeholder = "Filtre por funcao",
+                                        value = 'obitopor100k',
+                                        clearable=False,
+                                        options=[{'label':name, 'value':name} for name in saudes],
+                                        style = {
+                                            'width': '100%',
+                                            'margin-left': '-4px',
+                                            'margin-right': '-4px',
+                                            'z-index':15
+                                        },
+                                        disabled = False
+                                    ),
+                                    dcc.Graph(className = "graph", id = 'my-graph-saude-2', figure = graf_saude_2(NUPEC)),
+
+  
+                                            html.P("xxxx"),
+                                            html.P("Fonte: xxx")
+                                        ],
+                                        className = "pretty_container", style = {
+                                            'width': '50%',
+                                            'margin': '5px'
+                                        }
+                                    ),
+                
+                 
+                ],
+            className = "row container-display",
+            style = {
+                'margin-bottom': '10px',
+                'margin-left': '-4px',
+                'margin-right': '-4px'
+            }
+        ),
+      
+])
+
+])
 
 outros_links = html.Div([html.H3(["Outros links"]),
 
@@ -745,6 +835,7 @@ app.validation_layout = html.Div([
     financeiro, 
     royalties,
     ods,
+    saude,
     outros_links
 ])
 
@@ -763,6 +854,8 @@ def render_content(tab):
     elif tab == 'tab-5':
         return ods
     elif tab == 'tab-6':
+        return saude
+    elif tab == 'tab-7':
         return outros_links
 
 @app.callback([Output('my-graph1','figure'),Output('my-graph2','figure'),Output('my-graph3','figure'),Output('my-graph4','figure')],[Input('filtro-local','value')])
@@ -790,3 +883,10 @@ def update_graph_roy_2(local):
 def update_graph_ods_1(local):
     return graf_ods_1(local),graf_ods_2(local)
 
+@app.callback(Output('my-graph-saude-1','figure'),[Input('filtro-local-saude','value'),Input('filtro-funcao-saude','value')])
+def update_graph_saude_1(local,funcao):
+    return graf_saude_1(local)
+
+@app.callback(Output('my-graph-saude-2','figure'),[Input('filtro-local-saude','value'),Input('filtro-funcao-saude','value')])
+def update_graph_saude_2(local,funcao):
+    return  graf_saude_2(local,funcao) 

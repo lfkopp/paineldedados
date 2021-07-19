@@ -30,6 +30,8 @@ ROYALTIES = pd.read_csv(ROYALTIES_, sep=";",index_col=False)
 POP_ = PATH.joinpath("data/populacao.csv")
 POP = pd.read_csv(POP_, sep=";",index_col=False)
 
+SAUDE_ = PATH.joinpath("data/saude.csv")
+SAUDE = pd.read_csv(SAUDE_)
 
 OUTROS_ = PATH.joinpath("data/outroslinks.xlsx")
 OUTROS = pd.read_excel(OUTROS_)
@@ -45,7 +47,7 @@ NUPEC = ['Areal','Armação dos Búzios','Miguel Pereira','Paraíba do Sul','Pat
 financeiros = ["Despesas Exceto Intraorçamentárias","01 - Legislativa","04 - Administração","06 - Segurança Pública","08 - Assistência Social","09 - Previdência Social",
 				"10 - Saúde","12 - Educação","15 - Urbanismo","17 - Saneamento","20 - Agricultura","23 - Comércio e Serviços","26 - Transporte","28 - Encargos Especiais","Outros"]
 
-
+saudes = ['casos','obitos','casopor100k','obitopor100k','pop','saude','letalidade','saudepop']
 # Filter definitions
 
 # Graphs
@@ -198,6 +200,22 @@ def graf_ods_2(local):
 	fig =  px.density_heatmap(df, x='ano', z='royalties per capita',  y="municipio", hover_data=['municipio','ano'], title="Graf. 1 - Metas ODS")
 	fig.update_layout(xaxis = dict(tickmode = 'linear',dtick = 1))
 	return fig  
+
+def graf_saude_1(local):
+	df = SAUDE
+	if (type(local) == list) and (len(local)>0):
+		local2 = [remover_acentos(x).upper() for x in local]
+		df = df.loc[df['municipio'].isin(local2)]
+	fig = px.scatter(df, x='pop', y='saude', color='municipio', hover_data=['municipio','ano'], title="Graf. 1 -  Gasto de saúde per capita x População em 2019")
+	return fig
+
+def graf_saude_2(local, funcao='obitopor100k'):
+	df = SAUDE
+	if (type(local) == list) and (len(local)>0):
+		local2 = [remover_acentos(x).upper() for x in local]
+		df = df.loc[df['municipio'].isin(local2)]
+	fig = px.scatter(df, x='saudepop', y=funcao, color='municipio',  hover_data=['municipio','ano'], title="Graf. 2 - Indicador selecionado x Gasto de saúde per capita")
+	return fig
 
 
 def outroslinks(html,app):
