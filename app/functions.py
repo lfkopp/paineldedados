@@ -33,8 +33,14 @@ POP = pd.read_csv(POP_, sep=";",index_col=False)
 SAUDE_ = PATH.joinpath("data/saude.csv")
 SAUDE = pd.read_csv(SAUDE_)
 
+AREA_ = PATH.joinpath("data/area.csv")
+AREA = pd.read_csv(AREA_, sep=';',decimal=',', index_col=False, nrows=92)
+AREA = POP.merge(AREA, on='municipio')
+AREA['densidade'] = AREA['populacao'] / AREA['area']
+
 OUTROS_ = PATH.joinpath("data/outroslinks.xlsx")
 OUTROS = pd.read_excel(OUTROS_)
+
 
 # Create MUNICIPIOS
 MUNICIPIOS = []
@@ -141,6 +147,34 @@ def graf3(local=NUPEC):
 
 #@cache.memoize(timeout=timeout) 
 def graf4(local=NUPEC):
+	if 'NUPEC' in local:
+		local = list(set(list(NUPEC) + list(local)))
+	df = AREA 
+	if (type(local) == list) and (len(local)>0):
+		df = df.loc[df['municipio'].isin(local)]
+	fig = px.choropleth_mapbox(df, geojson=RJ_MUN_GEOJSON, locations="municipio",
+							featureidkey = "properties.name",
+							color="densidade",
+							hover_name="municipio",
+							color_continuous_scale="YlGn",
+							animation_frame='ano',
+							#range_color=(0.4, 0.65),
+							mapbox_style="carto-positron",
+							zoom=6, center=dict(lat=-22.158536, lon=-42.684229),
+							opacity=0.5,
+							labels={'densidade':'densidade'},
+							)
+	fig.update_geos(fitbounds="locations",visible=False).update_layout(title={'text':'Graf. 4 - Densidade populacional dos Municípios do RJ',
+							'x':0.75,
+							'yanchor': 'top'},  
+							paper_bgcolor='#f5f5f5',
+							margin={'t':50,'b':40,'l':20,'r':20},
+							legend_orientation="h")
+	return fig
+
+
+#@cache.memoize(timeout=timeout) 
+def graf5(local=NUPEC):
 	if 'NUPEC' in local:
 		local = list(set(list(NUPEC) + list(local)))
 	df = POP

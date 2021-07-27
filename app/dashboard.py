@@ -46,7 +46,7 @@ base = html.Div([
                     style = {
                         'text-align': 'left',
                         'margin-left': '2px',
-                        'width': '100%'
+                        'width': '100%' 
                     }),
                 html.Div(className = 'one-third column'),
                 html.Div([
@@ -428,6 +428,37 @@ dados_socioeconomicos = html.Div([
                 ),
                 html.Div(
                     [dcc.Graph(className = "graph", id = 'my-graph4', figure = graf4('NUPEC')),
+                        html.P("xx"),
+                        html.P("Fonte: https://www.ibge.gov.br/geociencias/organizacao-do-territorio/estrutura-territorial/15761-areas-dos-municipios.html?=&t=downloads")
+                    ],
+                    className = "pretty_container", style = {
+                        'width': '50%',
+                        'margin': '5px'
+                    }
+                ),
+            ],
+            className = "row container-display",
+            style = {
+                'margin-bottom': '10px',
+                'margin-left': '-4px',
+                'margin-right': '-4px'
+            }
+        ),
+
+                    html.Div(
+            [
+                html.Div(
+                    [dcc.Graph(className = "graph", id = 'my-graph5', figure = graf5('NUPEC')),
+                        html.P("A população...."),
+                        html.P("Fonte: https://www.ibge.gov.br/estatisticas/sociais/populacao/9109-projecao-da-populacao.html?=&t=downloads")
+                    ],
+                    className = "pretty_container", style = {
+                        'width': '50%',
+                        'margin': '5px'
+                    }
+                ),
+                html.Div(
+                    [dcc.Graph(className = "graph", id = 'my-graph6', figure = graf5('NUPEC')),
                         html.P("xx"),
                         html.P("Fonte: xx")
                     ],
@@ -858,9 +889,9 @@ def render_content(tab):
     elif tab == 'tab-7':
         return outros_links
 
-@app.callback([Output('my-graph1','figure'),Output('my-graph2','figure'),Output('my-graph3','figure'),Output('my-graph4','figure')],[Input('filtro-local','value')])
+@app.callback([Output('my-graph1','figure'),Output('my-graph2','figure'),Output('my-graph3','figure'),Output('my-graph4','figure'),Output('my-graph5','figure'),Output('my-graph6','figure')],[Input('filtro-local','value')])
 def update_graph1(local):
-    return graf1(local), graf2(local), graf3(local), graf4(local)
+    return graf1(local), graf2(local), graf3(local), graf4(local), graf5(local), graf5(local)
 
 
 @app.callback(Output('my-graph-fin-1','figure'),[Input('filtro-local-fin','value'),Input('filtro-funcao-fin','value')])
