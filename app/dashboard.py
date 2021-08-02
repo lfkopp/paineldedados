@@ -1,4 +1,3 @@
-
 # Imports
 from app.config import app
 from app.functions import *
@@ -9,27 +8,16 @@ import dash_daq as daq
 
 
 # Graph template
-pio.templates["covid"] = go.layout.Template(
-    layout_annotations=[
-        dict(
-            name="ufrj",
-            text="COPPEAD NUPEC",
-            textangle=0,
-            opacity=0.1,
-            font=dict(color="black", size=20),
-            xref="paper",
-            yref="paper",
-            x=0.5,
-            y=0.5,
-            showarrow=False,
-        )
-    ]
-)
-pio.templates.default = "plotly+covid"
+pio.templates["nupec"] = go.layout.Template(
+    layout_annotations=[dict(name="ufrj",text="COPPEAD NUPEC",textangle=0,opacity=0.1,
+                        font=dict(color="black", size=20),
+                        xref="paper",yref="paper",x=0.5,y=0.5,showarrow=False)])
+
+pio.templates.default = "plotly+nupec"
 
 # App layout
 
-base = html.Div([
+base = html.Div([html.Div([],style={'margin':'auto'}),
     html.Div(children = [
         html.Div(children = [
                 html.Div([
@@ -47,8 +35,9 @@ base = html.Div([
                     style = {
                         'text-align': 'left',
                         'margin-left': '2px',
-                        'width': '100%' 
-                    }),
+                         
+                        'width':'100%'   ,
+                 }),
                 html.Div(className = 'one-third column'),
                 html.Div([
                         html.A(html.Img(
@@ -111,7 +100,7 @@ base = html.Div([
                                             "margin-right": "5px"
                                         }
                                     ),
-                                    href = "http://paineldedados.herokuapp.com/")
+                                    href = "https://painelgestaolocal.coppead.ufrj.br/")
                             ],
                             className = "one-half column",
                             style = {
@@ -152,209 +141,88 @@ base = html.Div([
             ],
             style = {
                 'margin-top': '18px'
-            })
-    ])
-])
+            }),
+    html.Div([],style={'margin':'0px auto'}),]
+        ,style={'max-width':'1300px'})
+]
+)
 
 # Tabs
 
 pagina_inicial = html.Div([
 html.H3(["Cátedra NUPEC"]),
 html.Div([
-        
-        html.P(["""Criada com os principais objetivos de: 
-            fomentar o ensino e a pesquisa sobre gestão local; estimular
-            a criação de um centro de estudos sobre governo local no 
-            âmbito de uma Escola de Negócios promovendo a interação 
-            público-privada como estratégia de desenvolvimento; inspirar 
-            a inovação na gestão pública local aproximando os gestores 
-            públicos, privados e os cidadãos; gerar e disseminar 
-            conhecimento de vanguarda sobre a gestão local que permita 
-            ações de impacto social; e promover a formação de lideranças 
-            acadêmicas e executivas voltadas para a modernização da 
-            gestão local."""
-            ])
+        html.P([
+            """Uma Cátedra de Pesquisa consiste no financiamento, via doação por empresas, de atividades de ensino e  pesquisa. 
+               O financiamento envolve recursos para um  professor responsável, assistentes de pesquisa, material didático, viagens,  
+               suporte informático e apoio administrativo geral. Os objetivos de uma são a realização de pesquisas na área  específica 
+               da Cátedra e o oferecimento de disciplinas dentro desta mesma área  de interesse, com o objetivo de formação de pessoal 
+               com qualificação  especializada.""",
+            html.H3("A Cátedra COPPEAD-NUPEC foi criada com os principais objetivos de:"),
+            html.Ul([
+                html.Li(['fomentar o ensino e a pesquisa sobre gestão local;']),
+                html.Li(['estimular a criação de um centro de estudos sobre governo local no âmbito de uma Escola de Negócios promovendo a interação público-privada como estratégia de desenvolvimento;']),
+                html.Li(['inspirar a inovação na gestão pública local aproximando os gestores públicos, privados e os cidadãos;']),
+                html.Li(['gerar e disseminar conhecimento de vanguarda sobre a gestão local que permita ações de impacto social;']),
+                html.Li(['promover a formação de lideranças acadêmicas e executivas voltadas para a modernização da gestão local.']),
+                ], style={'margin-left':'10px'}),
+            html.H3("As principais atividades serão:"),
+            html.Ul([
+                html.Li(['Monitoramento das Receitas e Despesas;']),
+                html.Li(['Análise da Autonomia Orçamentária e Financeira;']),
+                html.Li(['Acompanhamento da Gestão Fiscal e Tributária;']),
+                html.Li(['Estudos sobre Novas Fontes de Recursos;']),
+                html.Li(['O papel dos Royalties e Participações Especiais;']),
+                html.Li(['Cenários Prospectivos de Fontes Alternativas de Receitas']),
+                ], style={'margin-left':'10px'}),
+            ])], className = "row container-display",style = {'margin': '20px'}),
 
-    ],
-    className = "row container-display",
-    style = {
-        'margin-bottom': '10px',
-        'margin-left': '4px',
-        'margin-right': '4px'
-    }
-),
 
-html.H3(["Equipe"]),
-html.H4(["Pesquisadores"]),
+
+#### INICIO EQUIPE ########
 html.Div([
-    html.Div([
-        html.Img(
-                src = app.get_asset_url("Ariane.jpg"),
-                id = "ariane-image",
-                title = 'Ariane Figueira',
-                style = {
-                    "align": "center",
-                        "height": "120px",
-                    "width": "auto",
-                    "margin-bottom": "2px"
-                },
-            ),
-        html.P(["Ariane Figueira"])],
-        style = {
-            'margin-bottom': '10px',
-            'margin-left': '4px',
-            'margin-right': '4px'
-        }
-    ),
-    
-        html.Div([
-            html.Img(
-                    src = app.get_asset_url("Eduardo_Raupp.jpg"),
-                    id = "eduardo-image",
-                    title = 'Eduardo Raupp',
-                    style = {
-                        "align": "center",
-                        "height": "120px",
-                        "width": "auto",
-                        "margin-bottom": "2px"
-                    },
-                ),
-            html.P(["Eduardo Raupp"])],
-            style = {
-                'margin-bottom': '10px',
-                'margin-left': '4px',
-                'margin-right': '4px'
-        }
-    ),
-    
-        html.Div([
-            html.Img(
-                    src = app.get_asset_url("Olavo-Diogo-150x150.jpg"),
-                    id = "olavo-image",
-                    title = 'Olavo Diogo',
-                    style = {
-                        "align": "center",
-                        "height": "120px",
-                        "width": "auto",
-                        "margin-bottom": "2px"
-                    },
-                ),
-            html.P(["Olavo Diogo"])],
-            style = {
-                'margin-bottom': '10px',
-                'margin-left': '4px',
-                'margin-right': '4px'
-        }
-    ),
+    html.H3(["Equipe"]),
+        html.H4(["Pesquisadores"]),
             html.Div([
-            html.Img(
-                    src = app.get_asset_url("Marie_Anne.jpg"),
-                    id = "marie-image",
-                    title = 'Marie Anne Macadar',
-                    style = {
-                        "align": "center",
-                        "height": "120px",
-                        "width": "auto",
-                        "margin-bottom": "2px"
-                    },
-                ),
-            html.P(["Marie Anne Macadar"])],
-            style = {
-                'margin-bottom': '10px',
-                'margin-left': '4px',
-                'margin-right': '4px'
-        }
-    )
+                html.Div([
+                    html.Img(src = app.get_asset_url("Ariane.jpg"),id = "ariane-image",title = 'Ariane Figueira',className = "fotinha"),
+                    html.P(["Ariane Figueira"])],style = {'margin':'6px'}),
+                html.Div([
+                    html.Img(src = app.get_asset_url("Eduardo_Raupp.jpg"),id = "eduardo-image",title = 'Eduardo Raupp',className = "fotinha"),
+                    html.P(["Eduardo Raupp"])],style = {'margin':'6px'}),
+                html.Div([
+                    html.Img(src = app.get_asset_url("Olavo-Diogo-150x150.jpg"),id = "olavo-image",title = 'Olavo Diogo',className = "fotinha"),
+                    html.P(["Olavo Diogo"])],style = {'margin':'6px'}),
+                html.Div([
+                    html.Img(src = app.get_asset_url("Marie_Anne.jpg"),id = "marie-image",title = 'Marie Anne Macadar',className = "fotinha"),
+                    html.P(["Marie Anne Macadar"])],style = {'margin':'6px'}),
+                ],className = "row container-display",style={'margin':'20px'}),
 
-    ],className = "row container-display",
-),
-
-# html.H4(["Outros"]),
-# html.Div([
-
-
-#     html.Div([
-#         html.Img(
-#                 src = app.get_asset_url("Ariane.jpg"),
-#                 id = "kopp-image",
-#                 style = {
-#                     "align": "center",
-#                         "height": "120px",
-#                     "width": "auto",
-#                     "margin-bottom": "2px"
-#                 },
-#             ),
-#         html.P(["Luis Filipe Kopp"])],
-#         style = {
-#             'margin-bottom': '10px',
-#             'margin-left': '4px',
-#             'margin-right': '4px'
-#         }
-#     ),
-
-#         html.Div([
-#         html.Img(
-#                 src = app.get_asset_url("Ariane.jpg"),
-#                 id = "helena-image",
-#                 style = {
-#                     "align": "center",
-#                         "height": "120px",
-#                     "width": "auto",
-#                     "margin-bottom": "2px"
-#                 },
-#             ),
-#         html.P(["Helena"])],
-#         style = {
-#             'margin-bottom': '10px',
-#             'margin-left': '4px',
-#             'margin-right': '4px'
-#         }
-#     ),
-
-#         html.Div([
-#         html.Img(
-#                 src = app.get_asset_url("Ariane.jpg"),
-#                 id = "vanessa-image",
-#                 style = {
-#                     "align": "center",
-#                         "height": "120px",
-#                     "width": "auto",
-#                     "margin-bottom": "2px"
-#                 },
-#             ),
-#         html.P(["Vanessa"])],
-#         style = {
-#             'margin-bottom': '10px',
-#             'margin-left': '4px',
-#             'margin-right': '4px'
-#         }
-#     ),    
-
-#     html.Div([
-#         html.Img(
-#                 src = app.get_asset_url("Ariane.jpg"),
-#                 id = "matheus-image",
-#                 style = {
-#                     "align": "center",
-#                         "height": "120px",
-#                     "width": "auto",
-#                     "margin-bottom": "2px"
-#                 },
-#             ),
-#         html.P(["Matheus"])],
-#         style = {
-#             'margin-bottom': '10px',
-#             'margin-left': '4px',
-#             'margin-right': '4px'
-#         }
-#     ),
-
-#     ],className = "row container-display",
-# ),
+        html.H4(["Assistentes de Pesquisa"]),
+            html.Div([
+                html.Div([
+                    html.Img(src = app.get_asset_url("no-user.png"),title="Luis Filipe Kopp",id = "kopp-image",className = "fotinha"),
+                    html.P(["Luis Filipe Kopp"])],style = {'margin':'6px'}),
+                html.Div([
+                    html.Img(src = app.get_asset_url("no-user.png"),title="Helena",id = "helena-image",className = "fotinha"),
+                    html.P(["Helena"])],style = {'margin':'6px'}),
+                html.Div([
+                    html.Img(src = app.get_asset_url("no-user.png"),title="Vanessa",id = "vanessa-image",className = "fotinha"),
+                    html.P(["Vanessa"])],style = {'margin':'6px'}),
+                html.Div([
+                    html.Img(src = app.get_asset_url("no-user.png"),title="Matheus",id = "matheus-image",className = "fotinha"),
+                    html.P(["Matheus"])],style = {'margin':'6px'}),
+                ],className = "row container-display",style={'margin':'20px'}
+        )]),
+##### FIM EQUIPE ####
 
 html.H3(["Contato"]),
-html.P("Para entrar em contato, enviar email para xxxxxx.xxxx@xxxx.com.br")
-])
+html.P("Para entrar em contato, enviar email para painelgestaolocal@coppead.ufrj.br")
+], style={
+    'display':'inline-block',
+    'margin': '20px',
+}
+)
 
 dados_socioeconomicos = html.Div([
     html.Div([
@@ -858,18 +726,7 @@ html.Div(outroslinks(html,app))
 
 # index layout
 app.layout = base
-
-# "complete" layout
-app.validation_layout = html.Div([
-    base,
-    pagina_inicial,
-    dados_socioeconomicos, 
-    financeiro, 
-    royalties,
-    ods,
-    saude,
-    outros_links
-])
+app.validation_layout = html.Div([base,pagina_inicial,dados_socioeconomicos,financeiro,royalties,ods,saude,outros_links])
 
 # Callbacks
 

@@ -140,19 +140,9 @@ body {
   flex-direction: column;
 }
 
-.legenda-covidimetro {
-  font-weight: bold;
-  font-size: 12px;
-  padding: 8px;
-  text-align: center;
-  border-style: solid;
-  border-color: black;
-  border-radius: 10px;
-}
-
-.container-legenda-covidimetro {
-  text-align :left;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-column-gap: 10px
+.fotinha {
+          align:  center;
+          height: 120px;
+          width:  auto;
+          margin-bottom: 2px;
 }
