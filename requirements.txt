@@ -14,3 +14,4 @@ dash_auth
 unidecode
 dash_daq
 statsmodels 
+pyopenssl
