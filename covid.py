@@ -3,7 +3,7 @@
 import pandas as pd
 from app.functions import remover_acentos
 # %%
-df = pd.read_csv('http://sistemas.saude.rj.gov.br/tabnetbd/csv/covid_munic_diarioh16266546305.csv',decimal=',', sep=';', encoding='latin-1', usecols=['Região de Saúde/Município','Casos','Óbitos','Casos  por 100.000 habitantes','Óbitos por 100.000 habitantes',"População 2019"])
+df = pd.read_csv('http://sistemas.saude.rj.gov.br/tabnetbd/csv/covid_munic_diarioh16280158591.csv',decimal=',', sep=';', encoding='latin-1', usecols=['Região de Saúde/Município','Casos','Óbitos','Casos  por 100.000 habitantes','Óbitos por 100.000 habitantes',"População 2019"])
 df.columns = ['municipio','casos','obitos','casopor100k','obitopor100k','pop']
 df = df[df['municipio'].str.startswith('.')]
 df['municipio'] = df['municipio'].str.replace('.', '').str.upper()
