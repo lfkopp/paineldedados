@@ -180,7 +180,7 @@ def graf5(local=NUPEC):
 	df = POP
 	if (type(local) == list) and (len(local)>0):
 		df = df.loc[df['municipio'].isin(local)]
-	fig =  px.scatter(df, x='ano', y='populacao', color="municipio", trendline="ols", hover_data=['municipio','ano'], title="Graf. 4 - ano pop")
+	fig =  px.scatter(df, x='ano', y='populacao', color="municipio", trendline="ols", hover_data=['municipio','ano'], title="Graf. 5 - ano pop")
 	fig.update_layout(paper_bgcolor='#f5f5f5')
 	return fig  
 
@@ -254,36 +254,31 @@ def graf_saude_2(local, funcao='obitopor100k'):
 
 def outroslinks(html,app):
 	result = [] 
-	result.append(html.Hr())
-
 	for line in OUTROS.iterrows():
-		print()
 		result.append(    
-			html.Div([   ## primeiro frame
-        
-       		html.Div([html.P(html.Img(src=app.get_asset_url("outroslinks/"+i), width=300)) for i in line[1]['imagens'].split(',') ]),
-
-        	html.Div([html.H4(html.A([line[1]['local']], target='_blank', href=line[1]['link'], style={"color": "red", "text-decoration": "none"})),
-					html.Div( [html.P(x) for x in line[1]['descricao'].split('\n')] )
-						],
-
-            style = {
-                'margin-bottom': '10px',
-                'margin-left': '40px',
-                'margin-right': '4px'
-            }
-					
-					),
-
-			
-        
-        ],
-        className = "row container-display",
-            style = {
-                'margin-bottom': '10px',
-                'margin-left': '4px',
-                'margin-right': '-4px'
-            }))
+			html.Div([ 
+            	html.Div([html.P(html.Img(src=app.get_asset_url("outroslinks/"+i), width=300)) for i in line[1]['imagens'].split(',') ]),
+	        	html.Div([html.H4(html.A([line[1]['local']], target='_blank', href=line[1]['link'], style={"color": "red", "text-decoration": "none"})),
+				html.Div([html.P(x) for x in line[1]['descricao'].split('\n')])],style = {'margin-bottom': '10px','margin-left': '40px','margin-right': '4px'}),],className = "row container-display",style = {'margin-bottom': '10px','margin-left': '4px','margin-right': '-4px'}))
 		result.append(html.Hr())
 	return result
  
+def fotos_prof(app,html):
+	result = []
+	profs = ['Ariane Figueira', 'Eduardo Raupp', 'Olavo Diogo', 'Marie Anne Macadar']
+	for p in profs:
+		p2 = p.replace(' ','_')
+		result.append(html.Div([
+                    html.Img(src = app.get_asset_url('pessoas/'+p2+'.jpg'),id = p2+"-image",title = p, className = "fotinha"),
+                    html.P([p])],style = {'margin':'6px'}))
+	return result
+
+def fotos_assist(app,html):
+	result = []
+	profs = ['Luis Filipe Kopp', 'Helena Dias', 'Vanessa', 'Matheus Paiva']
+	for p in profs:
+		p2 = p.replace(' ','_')
+		result.append(html.Div([
+                    html.Img(src = app.get_asset_url('no-user.png'),id = p2+"-image",title = p, className = "fotinha"),
+                    html.P([p])],style = {'margin':'6px'}))
+	return result
