@@ -134,8 +134,8 @@ dados_socioeconomicos = html.Div([
                     className = "pretty_container",style={'width':'100%'}),
              html.Div(
                     [dcc.Graph(className = "graph", id = 'my-graph5', figure = graf5('NUPEC')),
-                        html.P("A população...."),
-                        html.P("Fonte: https://www.ibge.gov.br/estatisticas/sociais/populacao/9109-projecao-da-populacao.html?=&t=downloads")
+                        html.P("Nota do IDEB para o 5 ano, na rede Municipal de Ensino."),
+                        html.P("Fonte: MEC, disponível em http://ideb.inep.gov.br/")
                     ],className = "pretty_container",style={'width':'100%'}),
             ],className = "row container-display", style={'flex-wrap': 'wrap', 'align-items': 'stretch'})])
 

@@ -16,8 +16,8 @@ def remover_acentos(txt):
 
 PATH = pathlib.Path(__file__).parent
 
-px.set_mapbox_access_token("pk.eyJ1Ijoicm1jbnJpYmVpcm8iLCJhIjoiY2s4MHh5b3ZiMGtsbTNkcGFuazR1dWc4diJ9._aDTNPlmw3Nt6QSMm3YgmQ")
-
+#px.set_mapbox_access_token("pk.eyJ1Ijoicm1jbnJpYmVpcm8iLCJhIjoiY2s4MHh5b3ZiMGtsbTNkcGFuazR1dWc4diJ9._aDTNPlmw3Nt6QSMm3YgmQ")
+px.set_mapbox_access_token("pk.eyJ1IjoibGZrb3BwMTIzIiwiYSI6ImNrcnZobG01bTA2cWgybm8zcjhsbGNoMWEifQ.i3x7c9tzoJnNdpSFzMTUXA.MDfulIl0SWa2laZ1IrRs8w")
 with open(PATH.joinpath('data/geojs-33-mun.json'),encoding='utf-8') as geojson:
     RJ_MUN_GEOJSON = json.load(geojson)
 
@@ -37,6 +37,9 @@ AREA_ = PATH.joinpath("data/area.csv")
 AREA = pd.read_csv(AREA_, sep=';',decimal=',', index_col=False, nrows=92)
 AREA = POP.merge(AREA, on='municipio')
 AREA['densidade'] = AREA['populacao'] / AREA['area']
+
+IDEB_ = PATH.joinpath("data/ideb.xlsx")
+IDEB = pd.read_excel(IDEB_)
 
 OUTROS_ = PATH.joinpath("data/outroslinks.xlsx")
 OUTROS = pd.read_excel(OUTROS_)
@@ -174,15 +177,34 @@ def graf4(local=NUPEC):
 
 
 #@cache.memoize(timeout=timeout) 
-def graf5(local=NUPEC):
+def graf5(local=NUPEC,serie='5 ano'):
 	if 'NUPEC' in local:
 		local = list(set(list(NUPEC) + list(local)))
-	df = POP
+	df = IDEB
+	df['municipio'] = df['municipio'].apply(remover_acentos)
+	df = df[df['serie'] == serie]
 	if (type(local) == list) and (len(local)>0):
-		df = df.loc[df['municipio'].isin(local)]
-	fig =  px.scatter(df, x='ano', y='populacao', color="municipio", trendline="ols", hover_data=['municipio','ano'], title="Graf. 5 - ano pop")
-	fig.update_layout(paper_bgcolor='#f5f5f5')
-	return fig  
+		local2 = [remover_acentos(x) for x in local]
+		df = df.loc[df['municipio'].isin(local2)]
+	fig = px.choropleth_mapbox(df, geojson=RJ_MUN_GEOJSON, locations="mun",
+							featureidkey = "properties.name",
+							color="nota",
+							hover_name="municipio",
+							color_continuous_scale="YlGn",
+							animation_frame='ano',
+							range_color=(2, 7),
+							mapbox_style="carto-positron",
+							zoom=6, center=dict(lat=-22.158536, lon=-42.684229),
+							opacity=0.5,
+							labels={'nota':'nota'},
+							)
+	fig.update_geos(fitbounds="locations",visible=False).update_layout(title={'text':'Graf. 5 - Nota IDEB',
+							'x':0.75,
+							'yanchor': 'top'},  
+							paper_bgcolor='#f5f5f5',
+							margin={'t':50,'b':40,'l':20,'r':20},
+							legend_orientation="h")
+	return fig
 
 
 #@cache.memoize(timeout=timeout)  # in seconds
