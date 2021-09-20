@@ -97,46 +97,44 @@ html.P("Para entrar em contato, enviar email para painelgestaolocal@coppead.ufrj
 dados_socioeconomicos = html.Div([
     html.Div([
             html.Div([
-             dcc.Dropdown(
+            html.P('Locais'),
+            dcc.Dropdown(
                     id = "filtro-local",
                     multi = True,
                     placeholder = "Filtre por município",
                     value = 'NUPEC',
                     options=[{'label':name, 'value':name} for name in MUNICIPIOS]+[{'label':'NUPEC', 'value':'NUPEC'}],
-                    style = {'width': '100%','margin-left': '10px','margin-right': '10px'},
-                    disabled = False)
+                    style = {'width': '50%','margin-left': '10px','margin-right': '10px'},
+                    disabled = False),
+            html.P('Indicador'),
+            dcc.Dropdown(
+                    id = "filtro-funcao-soc",
+                    multi = False,
+                    placeholder = "Filtre por indicador",
+                    value = 'IDHM',
+                    clearable=False,
+                    options=[{'label':opt_soc[x]['label'], 'value':opt_soc[x]['name']} for x in opt_soc.keys()],
+                    style = {
+                        'width': '50%',
+                        'margin-left': '10px',
+                        'margin-right': '10px',
+                        'z-index':15
+                    },
+                    disabled = False
+                ),
             ], id = 'filtros2', className = 'row flex-display', style = {'margin-top': '3px'})
         ],className = 'pretty_container sticky',id = 'filtros',style = {'text-align': 'left'}),
    
       html.Div(
-            [
-                html.Div(
-                    [dcc.Graph(className = "graph", id = 'my-graph1', figure = graf1('NUPEC')),
-                        html.P("O Índice de Desenvolvimento Humano Municipal (IDHM) é uma medida composta de indicadores de três dimensões do desenvolvimento humano: longevidade, educação e renda. O índice varia de 0 a 1. Quanto mais próximo de 1, maior o desenvolvimento humano."),
-                        html.P("Fonte: http://www.atlasbrasil.org.br/ranking")
+            [   html.Div(
+                    [
+                        
+                        dcc.Graph(className = "graph", id = 'my-graph-soc', figure = graf_soc(local='NUPEC',funcao='GINI')),
+
+                       
+
                     ],className = "pretty_container",style={'width':'100%'}),
-                html.Div(
-                    [dcc.Graph(className = "graph", id = 'my-graph2', figure = graf2('NUPEC')),
-                        html.P("O Índice de Gini é um instrumento para medir o grau de concentração de renda em determinado grupo. Ele aponta a diferença entre os rendimentos dos mais pobres e dos mais ricos. O valor zero representa a situação de igualdade, ou seja, todos têm a mesma renda. O valor um está no extremo oposto, isto é, uma só pessoa detém toda a riqueza."),
-                        html.P("Fonte: http://tabnet.datasus.gov.br/cgi/ibge/censo/cnv/ginirj.def")
-                    ],className = "pretty_container",style={'width':'100%'}),
-            
-                html.Div(
-                    [dcc.Graph(className = "graph", id = 'my-graph3', figure = graf3('NUPEC')),
-                        html.P("A população...."),
-                        html.P("Fonte: https://www.ibge.gov.br/estatisticas/sociais/populacao/9109-projecao-da-populacao.html?=&t=downloads")
-                    ],className = "pretty_container",style={'width':'100%'}),
-                html.Div(
-                    [dcc.Graph(className = "graph", id = 'my-graph4', figure = graf4('NUPEC')),
-                        html.P("xx"),
-                        html.P("Fonte: https://www.ibge.gov.br/geociencias/organizacao-do-territorio/estrutura-territorial/15761-areas-dos-municipios.html?=&t=downloads")
-                    ],
-                    className = "pretty_container",style={'width':'100%'}),
-             html.Div(
-                    [dcc.Graph(className = "graph", id = 'my-graph5', figure = graf5('NUPEC')),
-                        html.P("Nota do IDEB para o 5 ano, na rede Municipal de Ensino."),
-                        html.P("Fonte: MEC, disponível em http://ideb.inep.gov.br/")
-                    ],className = "pretty_container",style={'width':'100%'}),
+                
             ],className = "row container-display", style={'flex-wrap': 'wrap', 'align-items': 'stretch'})])
 
 
@@ -164,7 +162,8 @@ financeiro = html.Div([
                         className = 'pretty_container sticky',
                         id = 'filtros',
                         style = {
-                            'text-align': 'left'
+                            'text-align': 'left',
+                            'height': '100%',
                     }
                         ),
    
@@ -522,6 +521,9 @@ def render_content(tab):
 def update_graph1(local):
     return graf1(local), graf2(local), graf3(local), graf4(local), graf5(local)
 
+@app.callback(Output('my-graph-soc','figure'),[Input('filtro-local','value'),Input('filtro-funcao-soc','value')])
+def update_graph_soc(local,funcao):
+    return graf_soc(local,funcao)
 
 @app.callback(Output('my-graph-fin-1','figure'),[Input('filtro-local-fin','value'),Input('filtro-funcao-fin','value')])
 def update_graph_fin_1(local,funcao):

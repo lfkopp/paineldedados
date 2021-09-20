@@ -57,11 +57,23 @@ financeiros = ["Despesas Exceto Intraorçamentárias","01 - Legislativa","04 - A
 				"10 - Saúde","12 - Educação","15 - Urbanismo","17 - Saneamento","20 - Agricultura","23 - Comércio e Serviços","26 - Transporte","28 - Encargos Especiais","Outros"]
 
 saudes = ['casos','obitos','casopor100k','obitopor100k','pop','saude','letalidade','saudepop']
+
+opt_soc = {	'IDHM':{ 		'label':'IDHM', 						'name': 'IDHM',		'desc':'oi tudo bem', 	'fonte':'esa é uma fonte'},
+			'GINI':{ 		'label':'Índice Gini', 					'name':'GINI', 		'desc':'oi tudo bem2', 	'fonte':'esa é uma fonte2'},
+			'DENSIDADE':{ 	'label':'Densidade Populacional', 		'name':'DENSIDADE', 'desc':'oi tudo bem2', 	'fonte':'esa é uma fonte2'},
+			'POPULACAO':{	'label':'População', 					'name':'POPULACAO',	'desc':'oi tudo bem2', 	'fonte':'esa é uma fonte2'},
+			'ROYALTIES':{	'label':'Royalties', 					'name':'ROYALTIES',	'desc':'oi tudo bem2', 	'fonte':'esa é uma fonte2'},
+			'IDEB':{ 		'label':'Nota IDEB para quinto ano', 	'name':'IDEB', 		'desc':'oi tudo bem2', 	'fonte':'esa é uma fonte2'}}
+
 # Filter definitions
 
 # Graphs
 
 #@cache.memoize(timeout=timeout)  # in seconds
+
+
+
+ #@cache.memoize(timeout=timeout)  # in seconds
 def graf1(local=NUPEC):
 	if 'NUPEC' in local:
 		local = list(set(list(NUPEC) + list(local)))
@@ -206,6 +218,51 @@ def graf5(local=NUPEC,serie='5 ano'):
 							legend_orientation="h")
 	return fig
 
+#@cache.memoize(timeout=timeout) 
+def graf6(local=NUPEC):
+	if 'NUPEC' in local:
+		local = list(set(list(NUPEC) + list(local)))
+	df = ROYALTIES
+	df['municipio'] = df['municipio'].apply(remover_acentos)
+	if (type(local) == list) and (len(local)>0):
+		local2 = [remover_acentos(x) for x in local]
+		df = df.loc[df['municipio'].isin(local2)]
+	print(df)
+	fig = px.choropleth_mapbox(df, geojson=RJ_MUN_GEOJSON, locations="municipio",
+							featureidkey = "properties.name",
+							color="Royalties",
+							hover_name="municipio",
+							color_continuous_scale="YlGn",
+							animation_frame='ano',
+							range_color=(2, 7),
+							mapbox_style="carto-positron",
+							zoom=6, center=dict(lat=-22.158536, lon=-42.684229),
+							opacity=0.5,
+							labels={'Royalties':'Royalties'},
+							)
+	fig.update_geos(fitbounds="locations",visible=False).update_layout(title={'text':'Graf. 6 - Royalties',
+							'x':0.75,
+							'yanchor': 'top'},  
+							paper_bgcolor='#f5f5f5',
+							margin={'t':50,'b':40,'l':20,'r':20},
+							legend_orientation="h")
+	return fig
+
+def graf_soc(local=NUPEC,funcao='IDHM'):
+	if funcao == 'IDHM':
+		return graf1(local)
+	elif funcao == 'GINI':
+		return graf2(local)
+	elif funcao == 'POPULACAO':
+		return graf3(local)
+	elif funcao == 'DENSIDADE':
+		return graf4(local)
+	elif funcao == 'IDEB':
+		return graf5(local)
+	elif funcao == 'ROYALTIES':
+		return graf6(local)
+	else:	
+		return "por favor, selecione um indicador"
 
 #@cache.memoize(timeout=timeout)  # in seconds
 def graf_fin_1(local="",funcao="Despesas Exceto Intraorçamentárias"):
