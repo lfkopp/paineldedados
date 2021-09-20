@@ -32,3 +32,8 @@ plt.scatter(df['Royalties'],df['12 - Educação'])
 # %%
 df.to_excel('finbra_roy2.xlsx')
 # %%
+opt_soc = {	'IDHM':{'funcao':'f', 'name':'IDHM', 'desc':'oi tudo bem', 'fonte':'esa é uma fonte'},
+			'IDHM2':{'funcao':'f', 'name':'IDHM2', 'desc':'oi tudo bem2', 'fonte':'esa é uma fonte2'}}
+# %%
+[x for x in opt_soc.keys()]
+# %%
