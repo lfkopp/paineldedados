@@ -37,3 +37,27 @@ opt_soc = {	'IDHM':{'funcao':'f', 'name':'IDHM', 'desc':'oi tudo bem', 'fonte':'
 # %%
 [x for x in opt_soc.keys()]
 # %%
+import pandas as pd
+import pathlib
+from unicodedata import normalize
+PATH = pathlib.Path(__file__).parent
+
+def remover_acentos(txt):
+	return normalize('NFKD', txt).encode('ASCII', 'ignore').decode('ASCII').upper()
+
+
+# %%
+ROYALTIES_ = PATH.joinpath("data/royalties.csv")
+ROYALTIES = pd.read_csv(ROYALTIES_, sep=";",index_col=False)
+
+
+EFICIENCIA_ = PATH.joinpath("data/despesas_do_resumo.xlsx")
+EFICIENCIA = pd.read_excel(EFICIENCIA_)
+for x in ["Despesas Correntes","Despesas de Capital","Investimentos","Pessoal"]:
+	EFICIENCIA['% '+x] = EFICIENCIA[x]/EFICIENCIA['total']
+ROYALTIES_TEMP = ROYALTIES
+ROYALTIES_TEMP['municipio'] = ROYALTIES_TEMP['municipio'].apply(remover_acentos)
+EFICIENCIA = pd.merge(EFICIENCIA, ROYALTIES_TEMP, how='left', on=['municipio','ano'])
+EFICIENCIA.fillna(0, inplace=True)
+EFICIENCIA
+# %%
