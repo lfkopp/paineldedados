@@ -251,7 +251,58 @@ financeiro = html.Div([
                         'width': '100%',
                         'margin': '5px'
                     }
-                )
+                ),
+
+                                html.Div([   ## grafico 3
+                     
+                     dcc.Graph(className = "graph", id = 'my-graph-fin-3', figure = graf_fin_3(NUPEC)),
+
+                     html.Div([      ### dropddown
+                                dcc.Dropdown(
+                                        id = "filtro-funcao1B-fin",
+                                        multi = False,
+                                        placeholder = "Filtre por funcao",
+                                        value = 'total',
+                                        clearable=False,
+                                        options=[{'label':name, 'value':name} for name in eficiencias],
+                                        style = {
+                                            'width': '100%',
+                                            'margin-left': '10px',
+                                            'margin-right': '10px',
+                                            'z-index':15
+                                        },
+                                        disabled = False
+                                    ),
+                                dcc.Dropdown(
+                                        id = "filtro-funcao2B-fin",
+                                        multi = False,
+                                        placeholder = "Filtre por funcao",
+                                        value = 'Despesas Correntes',
+                                        clearable=False,
+                                        options=[{'label':name, 'value':name} for name in eficiencias],
+                                        style = {
+                                            'width': '100%',
+                                            'margin-left': '10px',
+                                            'margin-right': '10px',
+                                            'z-index':15
+                                        },
+                                        disabled = False
+                                    )
+                                ], id = 'filtros6b', className = 'row flex-display', style = {
+                                    'margin-top': '3px'
+                        }),
+
+                        html.P("xxxx"),
+                        html.P("Fonte: xxx")
+                    ],
+                    className = "pretty_container", style = {
+                        'width': '100%',
+                        'margin': '5px'
+                    }
+                ),
+
+
+
                 
                 ],
             className = "row container-display",  
@@ -532,6 +583,10 @@ def update_graph_fin_1(local,funcao):
 @app.callback(Output('my-graph-fin-2','figure'),[Input('filtro-local-fin','value'),Input('filtro-funcao1-fin','value'),Input('filtro-funcao2-fin','value')])
 def update_graph_fin_2(local,funcao1,funcao2):
     return graf_fin_2(local,funcao1,funcao2)
+
+@app.callback(Output('my-graph-fin-3','figure'),[Input('filtro-local-fin','value'),Input('filtro-funcao1B-fin','value'),Input('filtro-funcao2B-fin','value')])
+def update_graph_fin_3(local,funcao1,funcao2):
+    return graf_fin_3(local,funcao1,funcao2)
 
 @app.callback(Output('my-graph-roy-1','figure'),[Input('filtro-local-roy','value')])
 def update_graph_roy_1(local):

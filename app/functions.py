@@ -41,6 +41,16 @@ AREA['densidade'] = AREA['populacao'] / AREA['area']
 IDEB_ = PATH.joinpath("data/ideb.xlsx")
 IDEB = pd.read_excel(IDEB_)
 
+EFICIENCIA_ = PATH.joinpath("data/despesas_do_resumo.xlsx")
+EFICIENCIA = pd.read_excel(EFICIENCIA_)
+for x in ["Despesas Correntes","Despesas de Capital","Investimentos","Pessoal"]:
+	EFICIENCIA['% '+x] = EFICIENCIA[x]/EFICIENCIA['total']
+ROYALTIES_TEMP = ROYALTIES.copy()
+ROYALTIES_TEMP['municipio'] = ROYALTIES_TEMP['municipio'].apply(remover_acentos)
+EFICIENCIA = pd.merge(EFICIENCIA, ROYALTIES_TEMP, how='left', on=['municipio','ano'])
+EFICIENCIA.fillna(0, inplace=True)
+EFICIENCIA
+
 OUTROS_ = PATH.joinpath("data/outroslinks.xlsx")
 OUTROS = pd.read_excel(OUTROS_)
 
@@ -55,6 +65,8 @@ NUPEC = ['Areal','Armação dos Búzios','Miguel Pereira','Paraíba do Sul','Pat
 
 financeiros = ["Despesas Exceto Intraorçamentárias","01 - Legislativa","04 - Administração","06 - Segurança Pública","08 - Assistência Social","09 - Previdência Social",
 				"10 - Saúde","12 - Educação","15 - Urbanismo","17 - Saneamento","20 - Agricultura","23 - Comércio e Serviços","26 - Transporte","28 - Encargos Especiais","Outros"]
+
+eficiencias = [ "total","Despesas Correntes","Despesas de Capital","Investimentos","Pessoal","% Despesas Correntes","% Despesas de Capital","% Investimentos","% Pessoal","Royalties", "pop", "royalties per capita"]
 
 saudes = ['casos','obitos','casopor100k','obitopor100k','pop','saude','letalidade','saudepop']
 
@@ -225,16 +237,15 @@ def graf6(local=NUPEC):
 	df = ROYALTIES
 	df['municipio'] = df['municipio'].apply(remover_acentos)
 	if (type(local) == list) and (len(local)>0):
-		local2 = [remover_acentos(x) for x in local]
+		local2 = [remover_acentos(x).upper() for x in local]
 		df = df.loc[df['municipio'].isin(local2)]
-	print(df)
 	fig = px.choropleth_mapbox(df, geojson=RJ_MUN_GEOJSON, locations="municipio",
-							featureidkey = "properties.name",
+							featureidkey = "properties.nome",
 							color="Royalties",
 							hover_name="municipio",
 							color_continuous_scale="YlGn",
 							animation_frame='ano',
-							range_color=(2, 7),
+							#range_color=(2, 7),
 							mapbox_style="carto-positron",
 							zoom=6, center=dict(lat=-22.158536, lon=-42.684229),
 							opacity=0.5,
@@ -279,8 +290,18 @@ def graf_fin_2(local="",funcao1="10 - Saúde", funcao2="12 - Educação"):
 	if (type(local) == list) and (len(local)>0):
 		local2 = [remover_acentos(x) for x in local]
 		df = df.loc[df['municipio'].isin(local2)]
-	fig =  px.scatter(df, x=funcao1, y=funcao2, color="municipio", trendline="ols", hover_data=['municipio','ano'], title="Graf. 2 - Correlação entre dois tipos de Despesas")
+	fig =  px.scatter(df, x=funcao1, y=funcao2, color="municipio", trendline="ols", hover_data=['municipio','ano'], title="Graf. 2 - Correlação entre dois tipos de Despesas por função")
 	return fig  
+
+
+def graf_fin_3(local="",funcao1="total", funcao2="Despesas Correntes"):
+	df = EFICIENCIA
+	if (type(local) == list) and (len(local)>0):
+		local2 = [remover_acentos(x) for x in local]
+		df = df.loc[df['municipio'].isin(local2)]
+	fig =  px.scatter(df, x=funcao1, y=funcao2, color="municipio", trendline="ols", hover_data=['municipio','ano'], title="Graf. 3 - Correlação entre dois tipos de Despesas")
+	return fig  
+
 
 def graf_roy_1(local):
 	df = ROYALTIES 
