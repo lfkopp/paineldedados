@@ -111,7 +111,7 @@ dados_socioeconomicos = html.Div([
                     id = "filtro-funcao-soc",
                     multi = False,
                     placeholder = "Filtre por indicador",
-                    value = 'IDHM',
+                    value = 'GINI',
                     clearable=False,
                     options=[{'label':opt_soc[x]['label'], 'value':opt_soc[x]['name']} for x in opt_soc.keys()],
                     style = {
@@ -128,13 +128,15 @@ dados_socioeconomicos = html.Div([
       html.Div(
             [   html.Div(
                     [
-                        
                         dcc.Graph(className = "graph", id = 'my-graph-soc', figure = graf_soc(local='NUPEC',funcao='GINI')),
-
-                       
-
-                    ],className = "pretty_container",style={'width':'100%'}),
-                
+                   
+                    html.P("Os indicadores dos municípios do RJ auxiliam a identificar a evolução social e econômica ao longo dos anos."),
+                    html.P("IDHM e Gini ajudam a perceber o desenvolvimento e o grau de desigualdade."),
+                    html.P("A Nota IDEB é um indicador da qualidade da educação."),
+                    html.P("Em royalties, é possível avaliar o volume de recursos extra recebidos."),
+                    html.P("População e densidade populacional servem para indicar os municípios populosos."),
+                    
+                     ],className = "pretty_container",style={'width':'100%', 'margin-bottom':'10'}),
             ],className = "row container-display", style={'flex-wrap': 'wrap', 'align-items': 'stretch'})])
 
 
@@ -196,8 +198,8 @@ financeiro = html.Div([
                                     'margin-top': '3px'
                         }),
 
-                                            html.P("xxxx"),
-                                            html.P("Fonte: xxx")
+                                            html.P("Despesas ao longo dos anos, dividido por Função, de gasto."),
+                                            html.P("Fonte: SICONFI (https://siconfi.tesouro.gov.br/)")
                                         ],
                                         className = "pretty_container", style = {
                                             'width': '100%',
@@ -244,8 +246,8 @@ financeiro = html.Div([
                                     'margin-top': '3px'
                         }),
 
-                        html.P("xxxx"),
-                        html.P("Fonte: xxx")
+                        html.P("Despesas comparadas por função. Indica o quanto uma despesa varia em relação a outra função. Por exemplo, a despesa com Educação tem crescido mais do que Saúde?"),
+                        html.P("Fonte: SICONFI (https://siconfi.tesouro.gov.br/)")
                     ],
                     className = "pretty_container", style = {
                         'width': '100%',
@@ -292,9 +294,9 @@ financeiro = html.Div([
                                     'margin-top': '3px'
                         }),
 
-                        html.P("xxxx"),
-                        html.P("Fonte: xxx")
-                    ],
+                        html.P("Comparação de despesas por tipo (despesas de investimento e despesas correntes). Dentro de despesas Correntes, o quanto é relativo a gasto com Pessoal? Municípios que recebem mais Royalties investem mais?"),
+                        html.P("Fonte: SICONFI (https://siconfi.tesouro.gov.br/)")
+                                         ],
                     className = "pretty_container", style = {
                         'width': '100%',
                         'margin': '5px'
@@ -351,8 +353,8 @@ royalties = html.Div([
                                     dcc.Graph(className = "graph", id = 'my-graph-roy-1', figure = graf_roy_1(NUPEC)),
 
   
-                                            html.P("xxxx"),
-                                            html.P("Fonte: xxx")
+                                            html.P("Total de receitas oriundas dos Royalties."),
+                                             html.P("Fonte: SICONFI (https://siconfi.tesouro.gov.br/), ANP (https://www.gov.br/anp/pt-br/assuntos/royalties-e-outras-participacoes/royalties)")
                                         ],
                                         className = "pretty_container", style = {
                                             'width': '100%',
@@ -366,8 +368,8 @@ royalties = html.Div([
                                     dcc.Graph(className = "graph", id = 'my-graph-roy-2', figure = graf_roy_2(NUPEC)),
 
   
-                                            html.P("xxxx"),
-                                            html.P("Fonte: xxx")
+                                            html.P("Total de receita de Royalties normalizado pela população do município."),
+                                            html.P("Fonte: SICONFI (https://siconfi.tesouro.gov.br/), ANP (https://www.gov.br/anp/pt-br/assuntos/royalties-e-outras-participacoes/royalties)")
                                         ],
                                         className = "pretty_container", style = {
                                             'width': '100%',
@@ -488,15 +490,10 @@ saude = html.Div([
       html.Div(  ##graficos
             [       
             html.Div([  ## primeira linha
-               
                     html.Div([  ## grafico 1
-       
-                           
                                     dcc.Graph(className = "graph", id = 'my-graph-saude-1', figure = graf_saude_1(NUPEC)),
-
-  
-                                            html.P("xxxx"), 
-                                            html.P("Fonte: xxx")
+                                            html.P("Gasto com saúde proporcional à população do município."), 
+                                             html.P("Fonte: SICONFI, Ministério da Saúde (https://covid.saude.gov.br/) e IBGE")
                                         ],
                                         className = "pretty_container", style = {
                                             'width': '100%',
@@ -522,18 +519,14 @@ saude = html.Div([
                                         disabled = False
                                     ),
                                     dcc.Graph(className = "graph", id = 'my-graph-saude-2', figure = graf_saude_2(NUPEC)),
-
-  
-                                            html.P("xxxx"),
-                                            html.P("Fonte: xxx")
+                                            html.P("Comparativo de gasto de Saúde com óbitos e casos de COVID 19. Maiores gastos representaram melhor qualidade dos serviços de saúde nos municípios?"),
+                                            html.P("Fonte: SICONFI, Ministério da Saúde (https://covid.saude.gov.br/) e IBGE")
                                         ],
                                         className = "pretty_container", style = {
                                             'width': '100%',
                                             'margin': '5px'
                                         }
                                     ),
-                
-                 
                 ],
             className = "row container-display",
             style={'flex-wrap': 'wrap', 'align-items': 'stretch', 'margin':'0px -4px'}
@@ -568,9 +561,6 @@ def render_content(tab):
     elif tab == 'tab-7':
         return outros_links
 
-@app.callback([Output('my-graph1','figure'),Output('my-graph2','figure'),Output('my-graph3','figure'),Output('my-graph4','figure'),Output('my-graph5','figure')],[Input('filtro-local','value')])
-def update_graph1(local):
-    return graf1(local), graf2(local), graf3(local), graf4(local), graf5(local)
 
 @app.callback(Output('my-graph-soc','figure'),[Input('filtro-local','value'),Input('filtro-funcao-soc','value')])
 def update_graph_soc(local,funcao):

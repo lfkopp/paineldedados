@@ -40,6 +40,14 @@ AREA['densidade'] = AREA['populacao'] / AREA['area']
 
 IDEB_ = PATH.joinpath("data/ideb.xlsx")
 IDEB = pd.read_excel(IDEB_)
+IDEB = IDEB[IDEB['serie'] == '5 ano']
+IDEB['municipio'] = IDEB['municipio'].apply(remover_acentos)
+
+IDHM_  = PATH.joinpath("data/IDHM.csv")
+IDHM = pd.read_csv(IDHM_, sep=";",index_col=False)
+
+GINI_ = PATH.joinpath("data/gini.csv")
+GINI = pd.read_csv(GINI_, sep=";",dtype={"id": str},index_col=False)
 
 EFICIENCIA_ = PATH.joinpath("data/despesas_do_resumo.xlsx")
 EFICIENCIA = pd.read_excel(EFICIENCIA_)
@@ -70,210 +78,49 @@ eficiencias = [ "total","Despesas Correntes","Despesas de Capital","Investimento
 
 saudes = ['casos','obitos','casopor100k','obitopor100k','pop','saude','letalidade','saudepop']
 
-opt_soc = {	'IDHM':{ 		'label':'IDHM', 						'name': 'IDHM',		'desc':'oi tudo bem', 	'fonte':'esa é uma fonte'},
-			'GINI':{ 		'label':'Índice Gini', 					'name':'GINI', 		'desc':'oi tudo bem2', 	'fonte':'esa é uma fonte2'},
-			'DENSIDADE':{ 	'label':'Densidade Populacional', 		'name':'DENSIDADE', 'desc':'oi tudo bem2', 	'fonte':'esa é uma fonte2'},
-			'POPULACAO':{	'label':'População', 					'name':'POPULACAO',	'desc':'oi tudo bem2', 	'fonte':'esa é uma fonte2'},
-			'ROYALTIES':{	'label':'Royalties', 					'name':'ROYALTIES',	'desc':'oi tudo bem2', 	'fonte':'esa é uma fonte2'},
-			'IDEB':{ 		'label':'Nota IDEB para quinto ano', 	'name':'IDEB', 		'desc':'oi tudo bem2', 	'fonte':'esa é uma fonte2'}}
+opt_soc = {	'IDHM':{ 		'label':'IDH Municipal', 				'hover':'nome', 'name':'IDHM',		'col':'IDHM', 'filename':IDHM, 'desc':'oi tudo bem', 	'fonte':'http://www.atlasbrasil.org.br/'},
+			'GINI':{ 		'label':'Índice Gini', 					'hover':'nome',      'name':'GINI', 		'col':'gini', 'filename':GINI, 'desc':'oi tudo bem2', 	'fonte':'IBGE'},
+			'DENSIDADE':{ 	'label':'Densidade Populacional', 		'hover':'municipio', 'name':'DENSIDADE', 'col':'densidade', 'filename':AREA, 'desc':'oi tudo bem2', 	'fonte':'IBGE'},
+			'POPULACAO':{	'label':'População', 					'hover':'municipio', 'name':'POPULACAO',	'col':'populacao', 'filename':POP, 'desc':'oi tudo bem2', 	'fonte':'IBGE'},
+			'ROYALTIES':{	'label':'Royalties', 					'hover':'municipio', 'name':'ROYALTIES',	'col':'Royalties', 'filename':ROYALTIES, 'desc':'oi tudo bem2', 	'fonte':'ANP, SICONFI'},
+			'IDEB':{ 		'label':'Nota IDEB para quinto ano', 	'hover':'mun', 'name':'IDEB', 		'col':'nota', 'filename':IDEB, 'desc':'oi tudo bem2', 	'fonte':'http://ideb.inep.gov.br/'}}
 
 # Filter definitions
 
 # Graphs
-
 #@cache.memoize(timeout=timeout)  # in seconds
-
-
-
- #@cache.memoize(timeout=timeout)  # in seconds
-def graf1(local=NUPEC):
+def graf_soc(local=NUPEC, funcao='GINI'):
 	if 'NUPEC' in local:
-		local = list(set(list(NUPEC) + list(local)))
-	dados_file = PATH.joinpath("data/IDHM.csv")
-	df = pd.read_csv(dados_file, sep=";",index_col=False)
+		local = [remover_acentos(x).upper() for x in list(set(list(NUPEC) + list(local)))]
+	df = opt_soc[funcao]['filename']
+	mmin,mmax = min(df[opt_soc[funcao]['col']]),max(df[opt_soc[funcao]['col']])
+	df['MUN'] =df[opt_soc[funcao]['hover']].apply(lambda x: remover_acentos(x).upper())
 	if (type(local) == list) and (len(local)>0):
-		df = df.loc[df['nome'].isin(local)]
-	fig = px.choropleth_mapbox(df, geojson=RJ_MUN_GEOJSON, locations="nome",
+		local = [remover_acentos(x).upper() for x in local]
+		df = df.loc[df['MUN'].isin(local)]
+	fig = px.choropleth_mapbox(df, geojson=RJ_MUN_GEOJSON, locations=opt_soc[funcao]['hover'],
 							featureidkey = 'properties.name',
-							color="IDHM",
-							hover_name="nome",
+							color=opt_soc[funcao]['col'],
+							hover_name=opt_soc[funcao]['hover'],
 							color_continuous_scale="YlGn",
-							#range_color=(.450, .800),
+							range_color=(mmin, mmax),
 							mapbox_style="carto-positron",
 							zoom=6, center=dict(lat=-22.158536, lon=-42.684229),
 							opacity=0.5,
 							animation_frame='ano',
-							labels={'IDHM':'IDH Municipal'}
+							labels={opt_soc[funcao]['col']:opt_soc[funcao]['label']}
                           	)
-	fig.update_geos(fitbounds="locations",visible=False).update_layout(title={'text':'Graf. 1 - índice de Desenvolvimento Humano Municipal do RJ',
+	texto = f"""<b>{opt_soc[funcao]['label']}</b><br>fonte: {opt_soc[funcao]['fonte']}<br>"""
+	fig.update_geos(fitbounds="locations",visible=False).update_layout(
+		title={'text':texto,
 							'x':0.5,
 							'yanchor': 'top'},
 							paper_bgcolor='#f5f5f5',
-							margin={'t':50,'b':40,'l':20,'r':20},
-							legend_orientation="h")
-	fig.layout['sliders'][0]['active'] = len(fig.layout['sliders'][0]['steps'])-1
-	return fig
- 
-#@cache.memoize(timeout=timeout)  # in seconds
-def graf2(local=NUPEC):
-	if 'NUPEC' in local:
-		local = list(set(list(NUPEC) + list(local)))
-	dados_file = PATH.joinpath("data/gini.csv")
-	df = pd.read_csv(dados_file, sep=";",dtype={"id": str},index_col=False)
-	if (type(local) == list) and (len(local)>0):
-		df = df.loc[df['nome'].isin(local)]
-	fig = px.choropleth_mapbox(df, geojson=RJ_MUN_GEOJSON, locations="nome",
-							featureidkey = 'properties.name',
-							color="gini",
-							hover_name="nome",
-							color_continuous_scale="YlGn_r",
-							#range_color=(0.4, 0.65),
-							mapbox_style="carto-positron",
-							zoom=6, center=dict(lat=-22.158536, lon=-42.684229),
-							opacity=0.5,
-							animation_frame='ano',
-							labels={'gini':'GINI'}
-							)
-	fig.update_geos(fitbounds="locations",visible=False).update_layout(title={'text':'Graf. 2 - índice de Gini dos Municípios do RJ',
-							'x':0.5,
-							'yanchor': 'top'},
-							paper_bgcolor='#f5f5f5',
-							margin={'t':50,'b':40,'l':20,'r':20},
+							margin={'t':60,'b':40,'l':20,'r':20},
 							legend_orientation="h")
 	fig.layout['sliders'][0]['active'] = len(fig.layout['sliders'][0]['steps'])-1
 	return fig
 
-#@cache.memoize(timeout=timeout) 
-def graf3(local=NUPEC):
-	if 'NUPEC' in local:
-		local = list(set(list(NUPEC) + list(local)))
-	df = POP 
-	if (type(local) == list) and (len(local)>0):
-		df = df.loc[df['municipio'].isin(local)]
-	fig = px.choropleth_mapbox(df, geojson=RJ_MUN_GEOJSON, locations="municipio",
-							featureidkey = "properties.name",
-							color="populacao",
-							hover_name="municipio",
-							color_continuous_scale="YlGn",
-							#range_color=(0.4, 0.65),
-							mapbox_style="carto-positron",
-							zoom=6, center=dict(lat=-22.158536, lon=-42.684229),
-							opacity=0.5,
-							animation_frame='ano',
-							labels={'populacao':'populacao'},
-							)
-	fig.update_geos(fitbounds="locations",visible=False).update_layout(title={'text':'Graf. 3 - População dos Municípios do RJ',
-							'x':0.75,
-							'yanchor': 'top'},
-							paper_bgcolor='#f5f5f5',
-							margin={'t':50,'b':40,'l':20,'r':20},
-							legend_orientation="h")
-
-	fig.layout['sliders'][0]['active'] = len(fig.layout['sliders'][0]['steps'])-1
-	return fig
-
-#@cache.memoize(timeout=timeout) 
-def graf4(local=NUPEC):
-	if 'NUPEC' in local:
-		local = list(set(list(NUPEC) + list(local)))
-	df = AREA 
-	if (type(local) == list) and (len(local)>0):
-		df = df.loc[df['municipio'].isin(local)]
-	fig = px.choropleth_mapbox(df, geojson=RJ_MUN_GEOJSON, locations="municipio",
-							featureidkey = "properties.name",
-							color="densidade",
-							hover_name="municipio",
-							color_continuous_scale="YlGn",
-							animation_frame='ano',
-							#range_color=(0.4, 0.65),
-							mapbox_style="carto-positron",
-							zoom=6, center=dict(lat=-22.158536, lon=-42.684229),
-							opacity=0.5,
-							labels={'densidade':'densidade'},
-							)
-	fig.update_geos(fitbounds="locations",visible=False).update_layout(title={'text':'Graf. 4 - Densidade populacional dos Municípios do RJ',
-							'x':0.75,
-							'yanchor': 'top'},  
-							paper_bgcolor='#f5f5f5',
-							margin={'t':50,'b':40,'l':20,'r':20},
-							legend_orientation="h")
-	return fig
-
-
-#@cache.memoize(timeout=timeout) 
-def graf5(local=NUPEC,serie='5 ano'):
-	if 'NUPEC' in local:
-		local = list(set(list(NUPEC) + list(local)))
-	df = IDEB
-	df['municipio'] = df['municipio'].apply(remover_acentos)
-	df = df[df['serie'] == serie]
-	if (type(local) == list) and (len(local)>0):
-		local2 = [remover_acentos(x) for x in local]
-		df = df.loc[df['municipio'].isin(local2)]
-	fig = px.choropleth_mapbox(df, geojson=RJ_MUN_GEOJSON, locations="mun",
-							featureidkey = "properties.name",
-							color="nota",
-							hover_name="municipio",
-							color_continuous_scale="YlGn",
-							animation_frame='ano',
-							range_color=(2, 7),
-							mapbox_style="carto-positron",
-							zoom=6, center=dict(lat=-22.158536, lon=-42.684229),
-							opacity=0.5,
-							labels={'nota':'nota'},
-							)
-	fig.update_geos(fitbounds="locations",visible=False).update_layout(title={'text':'Graf. 5 - Nota IDEB',
-							'x':0.75,
-							'yanchor': 'top'},  
-							paper_bgcolor='#f5f5f5',
-							margin={'t':50,'b':40,'l':20,'r':20},
-							legend_orientation="h")
-	return fig
-
-#@cache.memoize(timeout=timeout) 
-def graf6(local=NUPEC):
-	if 'NUPEC' in local:
-		local = list(set(list(NUPEC) + list(local)))
-	df = ROYALTIES
-	df['municipio'] = df['municipio'].apply(remover_acentos)
-	if (type(local) == list) and (len(local)>0):
-		local2 = [remover_acentos(x).upper() for x in local]
-		df = df.loc[df['municipio'].isin(local2)]
-	fig = px.choropleth_mapbox(df, geojson=RJ_MUN_GEOJSON, locations="municipio",
-							featureidkey = "properties.nome",
-							color="Royalties",
-							hover_name="municipio",
-							color_continuous_scale="YlGn",
-							animation_frame='ano',
-							#range_color=(2, 7),
-							mapbox_style="carto-positron",
-							zoom=6, center=dict(lat=-22.158536, lon=-42.684229),
-							opacity=0.5,
-							labels={'Royalties':'Royalties'},
-							)
-	fig.update_geos(fitbounds="locations",visible=False).update_layout(title={'text':'Graf. 6 - Royalties',
-							'x':0.75,
-							'yanchor': 'top'},  
-							paper_bgcolor='#f5f5f5',
-							margin={'t':50,'b':40,'l':20,'r':20},
-							legend_orientation="h")
-	return fig
-
-def graf_soc(local=NUPEC,funcao='IDHM'):
-	if funcao == 'IDHM':
-		return graf1(local)
-	elif funcao == 'GINI':
-		return graf2(local)
-	elif funcao == 'POPULACAO':
-		return graf3(local)
-	elif funcao == 'DENSIDADE':
-		return graf4(local)
-	elif funcao == 'IDEB':
-		return graf5(local)
-	elif funcao == 'ROYALTIES':
-		return graf6(local)
-	else:	
-		return "por favor, selecione um indicador"
 
 #@cache.memoize(timeout=timeout)  # in seconds
 def graf_fin_1(local="",funcao="Despesas Exceto Intraorçamentárias"):
