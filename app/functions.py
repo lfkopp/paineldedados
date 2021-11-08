@@ -27,6 +27,9 @@ FINBRA = pd.read_csv(FINBRA_, sep=";",index_col=False)
 ROYALTIES_ = PATH.joinpath("data/royalties.csv")
 ROYALTIES = pd.read_csv(ROYALTIES_, sep=";",index_col=False)
 
+ROYALTIESDET_ = PATH.joinpath("data/royalties_detalhe.csv")
+ROYALTIESDET = pd.read_csv(ROYALTIESDET_, sep=";",index_col=False)
+
 POP_ = PATH.joinpath("data/populacao.csv")
 POP = pd.read_csv(POP_, sep=";",index_col=False)
 
@@ -77,6 +80,8 @@ financeiros = ["Despesas Exceto Intraorçamentárias","01 - Legislativa","04 - A
 eficiencias = [ "total","Despesas Correntes","Despesas de Capital","Investimentos","Pessoal","% Despesas Correntes","% Despesas de Capital","% Investimentos","% Pessoal","Royalties", "pop", "royalties per capita"]
 
 saudes = ['casos','obitos','casopor100k','obitopor100k','pop','saude','letalidade','saudepop']
+
+detalhes_roy = ['Royalties Estado','Cessão Onerosa - PBAM','Royalties - ANP','Royalties - CFH','Royalties - CFM','Royalties - FEP','Royalties - PEA','Total Geral']
 
 opt_soc = {	'IDHM':{ 		'label':'IDH Municipal', 				'hover':'nome', 'name':'IDHM',		'col':'IDHM', 'filename':IDHM, 'desc':'oi tudo bem', 	'fonte':'http://www.atlasbrasil.org.br/'},
 			'GINI':{ 		'label':'Índice Gini', 					'hover':'nome',      'name':'GINI', 		'col':'gini', 'filename':GINI, 'desc':'oi tudo bem2', 	'fonte':'IBGE'},
@@ -163,6 +168,15 @@ def graf_roy_2(local):
 	if (type(local) == list) and (len(local)>0):
 		df = df.loc[df['municipio'].isin(local)]
 	fig =  px.line(df, x='ano', y='royalties per capita',  color="municipio", hover_data=['municipio','ano'], title="Graf. 2 - Evolução Anual de Royalties per capita")
+	fig.update_layout(xaxis = dict(tickmode = 'linear',dtick = 1))
+	return fig  
+
+def graf_roy_3(local,detalhe="Total Geral"):
+	df = ROYALTIESDET
+	local = [remover_acentos(x).upper() for x in local]
+	if (type(local) == list) and (len(local)>0):
+		df = df.loc[df['municipio'].isin(local)]
+	fig =  px.line(df, x='ano', y=detalhe,  color="municipio", hover_data=['municipio','ano'], title="Graf. 3 - Evolução Anual de Royalties por tipo")
 	fig.update_layout(xaxis = dict(tickmode = 'linear',dtick = 1))
 	return fig  
 

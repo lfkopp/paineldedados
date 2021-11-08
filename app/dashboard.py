@@ -362,7 +362,7 @@ royalties = html.Div([
                                         }
                                     ),
 
-                                                    html.Div([  ## grafico 2
+                html.Div([  ## grafico 2
                  
                            
                                     dcc.Graph(className = "graph", id = 'my-graph-roy-2', figure = graf_roy_2(NUPEC)),
@@ -370,6 +370,57 @@ royalties = html.Div([
   
                                             html.P("Total de receita de Royalties normalizado pela população do município."),
                                             html.P("Fonte: SICONFI (https://siconfi.tesouro.gov.br/), ANP (https://www.gov.br/anp/pt-br/assuntos/royalties-e-outras-participacoes/royalties)")
+                                        ],
+                                        className = "pretty_container", style = {
+                                            'width': '100%',
+                                            'margin': '5px'
+                                        }
+                                    ),
+                                html.Div([  ## grafico 3
+                      dcc.Dropdown( 
+                                        id = "filtro-detalhe-roy",
+                                        multi = False,
+                                        placeholder = "Filtre por tipo",
+                                        value = 'Total Geral',
+                                        clearable=False,
+                                        options=[{'label':name, 'value':name} for name in detalhes_roy],
+                                        style = {
+                                            'width': '100%',
+                                            'margin-left': '-4px',
+                                            'margin-right': '-4px',
+                                            'z-index':15
+                                        },
+                                        disabled = False
+                                    ),
+                           
+                                    dcc.Graph(className = "graph", id = 'my-graph-roy-3', figure = graf_roy_3(NUPEC)),
+
+  
+
+
+
+html.P("Fonte:"),
+html.P("Secr.de Fazenda do Rio de Janeiro (TesouroRJ); TesouroNacionalTransparentes; ANP; SICONFI"),
+html.P("(1)  Inclui os Royalties que são repassados de forma indireta, ou seja : (a) os Royalties que são repassados pela ANP aos Estado e posteriormente aos Municipios que são transferidos  todos os municipios considerando a população geral ate mesmo para municipios que nao recebem royalties da ANP e (b) e Fundo Especial do Petróleo – FEP"),
+html.P("(2) Os dados das Transferencias da ANP e Participação Especial são os informados  pelo TesouroNacional"),
+html.P("(3) O valor da Cessão Onerosa, estabelecida pela Lei nº 13.885/2019 , foi transferida  para as contas do FPM e não para as contas de Royalties para a grande parte dos municipios em 31/12/2019, segundo relatórios de contas do TCE-RJ."),
+html.P("(4) Os Royalties - CFM e Royalties - CFH, são referentes as Compensações Financeiras de Recursos Minerais e Hidricos."),
+
+
+html.P("links das fontes:"),
+html.P("http://www.fazenda.rj.gov.br/tesouro/faces/oracle/webcenter/portalapp/pages/paginaDocumentos.jspx?datasource=UCMServer%23dDocName%3AWCC193245&_afrLoop=94961653942287012&_afrWindowMode=0&_afrWindowId=null&_adf.ctrl-state=5u1d99lfl_1#!%40%40%3F_afrWindowId%3Dnull%26_afrLoop%3D94961653942287012%26datasource%3DUCMServer%2523dDocName%253AWCC193245%26_afrWindowMode%3D0%26_adf.ctrl-state%3D5u1d99lfl_5"),
+html.P("https://www.tesourotransparente.gov.br/temas/estados-e-municipios/transferencias-a-estados-e-municipios#:~:text=05%2F08%2F2021-,Parcela%20das%20receitas%20federais%20arrecadadas%20pela%20Uni%C3%A3o%20%C3%A9%20repassada%20aos,equil%C3%ADbrio%20s%C3%B3cio%2Decon%C3%B4mico%20entre%20Estados."),
+html.P("https://www.gov.br/anp/pt-br/assuntos/royalties-e-outras-participacoes/royalties"),
+html.P("https://siconfi.tesouro.gov.br/siconfi/pages/public/consulta_finbra/finbra_list.jsf"),
+html.P("https://www.gov.br/economia/pt-br/assuntos/noticias/2019/12/governo-realiza-transferencia-de-r-11-73-bilhoes-da-cessao-onerosa-para-estados-e-municipios"),
+
+html.P("""Achados:
+(1) Analisando em detalhes as transferencias de Royalties dos Estado aos municipios, descobri que existe um erro no mês de fevereiro de 2018 nos dados disponiveis no site da Secretaria da Fazenda do RJ,  os valaores do referido mês estão dobrados. Após o acerto os dados conferem completamente com os informados como recebidos pelos municipios no Siconf.
+(2) Essa coleta de dados é um diferencial em comparação com os outros sites de analise dos Royalties. Alguns exemplos: OmeuMunincipio ( apenas dados do Siconf), InfoRoyalties da CandidoMendes (apenas as transferencia da ANP). A nossa coleta permite a analise completa dos dados referentes ao Petroleo, incluindo as transferencias pelos Estados, as Relações Onerosas e ainda permite a eliminação dos royalties de Minerio e Hídrico.
+(3) A coleta de dados permite a conferencias dos dados informados sobre os Royalties transferidos e recebidos, comparando os dados informados pela União, pelo Estado, pelo ANP e pelo Municipio(Sinconf)."""),
+
+
+
                                         ],
                                         className = "pretty_container", style = {
                                             'width': '100%',
@@ -585,6 +636,11 @@ def update_graph_roy_1(local):
 @app.callback(Output('my-graph-roy-2','figure'),[Input('filtro-local-roy','value')])
 def update_graph_roy_2(local):
     return graf_roy_2(local)
+
+@app.callback(Output('my-graph-roy-3','figure'),[Input('filtro-local-roy','value'),Input('filtro-detalhe-roy','value')])
+def update_graph_roy_3(local,detalhe):
+    return graf_roy_3(local,detalhe)
+
 
 @app.callback([Output('my-graph-ods-1','figure'),Output('my-graph-ods-2','figure')],[Input('filtro-local-ods','value')])
 def update_graph_ods_1(local):
