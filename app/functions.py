@@ -1,3 +1,4 @@
+from _typeshed import SupportsLenAndGetItem
 from app.config import cache, timeout
 import pandas as pd
 import numpy as np
@@ -72,7 +73,10 @@ NUM_MUN = len(RJ_MUN_GEOJSON["features"])
 for i in range(NUM_MUN):
     MUNICIPIOS.append(RJ_MUN_GEOJSON["features"][i]["properties"]["name"])
 
-NUPEC = ['Areal','Armação dos Búzios','Miguel Pereira','Paraíba do Sul','Paty dos Alferes','Quissamã','Rio das Flores','Sapucaia','Saquarema','Três Rios','Vassouras']
+NUPEC = ['Areal','Armação dos Búzios','Casimiro de Abreu','Comendador Levy Gasparian','Iguaba Grande','Miguel Pereira','Paraíba do Sul','Quissamã','Rio Claro','Rio das Flores','São Pedro da Aldeia', 'Sapucaia','Saquarema','Três Rios']
+
+	
+# 'Vassouras','Paty dos Alferes',
 
 financeiros = ["Despesas Exceto Intraorçamentárias","01 - Legislativa","04 - Administração","06 - Segurança Pública","08 - Assistência Social","09 - Previdência Social",
 				"10 - Saúde","12 - Educação","15 - Urbanismo","17 - Saneamento","20 - Agricultura","23 - Comércio e Serviços","26 - Transporte","28 - Encargos Especiais","Outros"]
