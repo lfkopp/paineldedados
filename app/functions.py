@@ -1,4 +1,3 @@
-from _typeshed import SupportsLenAndGetItem
 from app.config import cache, timeout
 import pandas as pd
 import numpy as np
