@@ -91,7 +91,8 @@ opt_soc = {	'IDHM':{ 		'label':'IDH Municipal', 				'hover':'nome', 'name':'IDHM
 			'DENSIDADE':{ 	'label':'Densidade Populacional', 		'hover':'municipio', 'name':'DENSIDADE', 'col':'densidade', 'filename':AREA, 'desc':'oi tudo bem2', 	'fonte':'IBGE'},
 			'POPULACAO':{	'label':'População', 					'hover':'municipio', 'name':'POPULACAO',	'col':'populacao', 'filename':POP, 'desc':'oi tudo bem2', 	'fonte':'IBGE'},
 			'ROYALTIES':{	'label':'Royalties', 					'hover':'municipio', 'name':'ROYALTIES',	'col':'Royalties', 'filename':ROYALTIES, 'desc':'oi tudo bem2', 	'fonte':'ANP, SICONFI'},
-			'IDEB':{ 		'label':'Nota IDEB para quinto ano', 	'hover':'mun', 'name':'IDEB', 		'col':'nota', 'filename':IDEB, 'desc':'oi tudo bem2', 	'fonte':'http://ideb.inep.gov.br/'}}
+			'IDEB':{ 		'label':'Nota IDEB para quinto ano', 	'hover':'mun', 'name':'IDEB', 		'col':'nota', 'filename':IDEB, 'desc':'oi tudo bem2', 	'fonte':'http://ideb.inep.gov.br/'},
+			'IDEB_100':{ 	'label':'Nota IDEB para quinto ano pardronizada', 	'hover':'mun', 'name':'IDEB_100', 		'col':'nota_100', 'filename':IDEB, 'desc':'oi tudo bem2', 	'fonte':'http://ideb.inep.gov.br/'}}
 
 # Filter definitions
 
