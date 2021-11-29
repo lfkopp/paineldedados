@@ -46,6 +46,10 @@ IDEB = pd.read_excel(IDEB_)
 IDEB = IDEB[IDEB['serie'] == '5 ano']
 IDEB['municipio'] = IDEB['municipio'].apply(remover_acentos)
 
+PIB_ = PATH.joinpath("data/pib.xls")
+PIB = pd.read_excel(PIB_)
+PIB['municipio'] = PIB['mun'].apply(remover_acentos)
+
 IDHM_  = PATH.joinpath("data/IDHM.csv")
 IDHM = pd.read_csv(IDHM_, sep=";",index_col=False)
 
@@ -86,13 +90,15 @@ saudes = ['casos','obitos','casopor100k','obitopor100k','pop','saude','letalidad
 
 detalhes_roy = ['Royalties Estado','Cessão Onerosa - PBAM','Royalties - ANP','Royalties - CFH','Royalties - CFM','Royalties - FEP','Royalties - PEA','Total Geral']
 
-opt_soc = {	'IDHM':{ 		'label':'IDH Municipal', 				'hover':'nome', 'name':'IDHM',		'col':'IDHM', 'filename':IDHM, 'desc':'oi tudo bem', 	'fonte':'http://www.atlasbrasil.org.br/'},
-			'GINI':{ 		'label':'Índice Gini', 					'hover':'nome',      'name':'GINI', 		'col':'gini', 'filename':GINI, 'desc':'oi tudo bem2', 	'fonte':'IBGE'},
-			'DENSIDADE':{ 	'label':'Densidade Populacional', 		'hover':'municipio', 'name':'DENSIDADE', 'col':'densidade', 'filename':AREA, 'desc':'oi tudo bem2', 	'fonte':'IBGE'},
-			'POPULACAO':{	'label':'População', 					'hover':'municipio', 'name':'POPULACAO',	'col':'populacao', 'filename':POP, 'desc':'oi tudo bem2', 	'fonte':'IBGE'},
-			'ROYALTIES':{	'label':'Royalties', 					'hover':'municipio', 'name':'ROYALTIES',	'col':'Royalties', 'filename':ROYALTIES, 'desc':'oi tudo bem2', 	'fonte':'ANP, SICONFI'},
-			'IDEB':{ 		'label':'Nota IDEB para quinto ano', 	'hover':'mun', 'name':'IDEB', 		'col':'nota', 'filename':IDEB, 'desc':'oi tudo bem2', 	'fonte':'http://ideb.inep.gov.br/'},
-			'IDEB_100':{ 	'label':'Nota IDEB para quinto ano pardronizada', 	'hover':'mun', 'name':'IDEB_100', 		'col':'nota_100', 'filename':IDEB, 'desc':'oi tudo bem2', 	'fonte':'http://ideb.inep.gov.br/'}}
+opt_soc = {	'IDHM':{ 		'label':'IDH Municipal', 				'hover':'nome', 			'name':'IDHM',			'col':'IDHM', 'filename':IDHM, 				'desc':'oi tudo bem', 	'fonte':'http://www.atlasbrasil.org.br/'},
+			'GINI':{ 		'label':'Índice Gini', 					'hover':'nome',     	 	'name':'GINI', 		'col':'gini', 'filename':GINI, 				'desc':'oi tudo bem2', 	'fonte':'IBGE'},
+			'DENSIDADE':{ 	'label':'Densidade Populacional', 		'hover':'municipio', 		'name':'DENSIDADE', 	'col':'densidade', 'filename':AREA, 		'desc':'oi tudo bem2', 	'fonte':'IBGE'},
+			'POPULACAO':{	'label':'População', 					'hover':'municipio', 		'name':'POPULACAO',		'col':'populacao', 'filename':POP, 			'desc':'oi tudo bem2', 	'fonte':'IBGE'},
+			'ROYALTIES':{	'label':'Royalties', 					'hover':'municipio', 		'name':'ROYALTIES',		'col':'Royalties', 'filename':ROYALTIES, 	'desc':'oi tudo bem2', 	'fonte':'ANP, SICONFI'},
+			'PIB':{			'label':'PIB', 							'hover':'mun', 				'name':'PIB', 			'col':'PIB', 'filename':PIB, 				'desc':'oi tudo bem2', 	'fonte':'IBGE https://www.ibge.gov.br/estatisticas/economicas/contas-nacionais/9088-produto-interno-bruto-dos-municipios.html?=&t=resultados'},
+			'PIBCAPITA':{	'label':'PIB per capita', 				'hover':'mun', 				'name':'PIBCAPITA',		'col':'PIB per capita', 'filename':PIB, 	'desc':'oi tudo bem2', 	'fonte':'IBGE https://www.ibge.gov.br/estatisticas/economicas/contas-nacionais/9088-produto-interno-bruto-dos-municipios.html?=&t=resultados'},
+			'IDEB':{ 		'label':'Nota IDEB para quinto ano', 	'hover':'mun', 				'name':'IDEB', 			'col':'nota', 'filename':IDEB, 				'desc':'oi tudo bem2', 	'fonte':'http://ideb.inep.gov.br/'},
+			'IDEB_100':{ 	'label':'Nota IDEB para quinto ano pardronizada', 	'hover':'mun', 'name':'IDEB_100', 		'col':'nota_100', 'filename':IDEB, 			'desc':'oi tudo bem2', 	'fonte':'http://ideb.inep.gov.br/'}}
 
 # Filter definitions
 
