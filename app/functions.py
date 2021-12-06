@@ -9,23 +9,56 @@ import plotly.io as pio
 import json
 import pathlib
 from unicodedata import normalize
- 
-def remover_acentos(txt):
-	return normalize('NFKD', txt).encode('ASCII', 'ignore').decode('ASCII').upper()
 
 
 PATH = pathlib.Path(__file__).parent
 
-#px.set_mapbox_access_token("pk.eyJ1Ijoicm1jbnJpYmVpcm8iLCJhIjoiY2s4MHh5b3ZiMGtsbTNkcGFuazR1dWc4diJ9._aDTNPlmw3Nt6QSMm3YgmQ")
+NUPEC = ['Areal','Armação dos Búzios','Casimiro de Abreu','Comendador Levy Gasparian','Iguaba Grande','Miguel Pereira','Paraíba do Sul','Quissamã','Rio Claro','Rio das Flores','São Pedro da Aldeia', 'Sapucaia','Saquarema','Três Rios']
+
+CENTRO = ['Paty do Alferes','Vassouras','Mendes','Barra do Piraí','Engenheiro Paulo de Frontin','Piraí','Paracambi','São José do Vale do Rio Preto','Valença','Areal','Comendador Levy Gasparian','Miguel Pereira','Paraíba do Sul','Rio Claro','Rio das Flores', 'Sapucaia','Três Rios']
+
+NORTE = ['Macaé','Conceição de Macabu','Rio Bonito','Silva Jardim','Rio das Ostras','Carapebus','Arraial do Cabo','Araruama','Cabo Frio','Armação dos Búzios','Casimiro de Abreu','Iguaba Grande','Quissamã','São Pedro da Aldeia','Saquarema']
+
 px.set_mapbox_access_token("pk.eyJ1IjoibGZrb3BwMTIzIiwiYSI6ImNrcnZobG01bTA2cWgybm8zcjhsbGNoMWEifQ.i3x7c9tzoJnNdpSFzMTUXA.MDfulIl0SWa2laZ1IrRs8w")
 with open(PATH.joinpath('data/geojs-33-mun.json'),encoding='utf-8') as geojson:
     RJ_MUN_GEOJSON = json.load(geojson)
+
+# Create MUNICIPIOS
+MUNICIPIOS = []
+NUM_MUN = len(RJ_MUN_GEOJSON["features"])
+for i in range(NUM_MUN):
+    MUNICIPIOS.append(RJ_MUN_GEOJSON["features"][i]["properties"]["name"])
+
+def remover_acentos(txt):
+	return normalize('NFKD', txt).encode('ASCII', 'ignore').decode('ASCII').upper()
+
+grupos = {  'NUPEC': [remover_acentos(x) for x in NUPEC],
+            'CENTRO': [remover_acentos(x) for x in CENTRO],
+            'NORTE': [remover_acentos(x) for x in NORTE]}
+
+def trata_local(local):
+    if local == '':
+        return []
+    if type(local) == str:
+        local = [local]
+    local = [remover_acentos(x) for x in local]
+    local = list(set(local))
+    for grupo in ['NUPEC', 'NORTE', 'CENTRO']:
+        if grupo in local:
+            local.remove(grupo)
+            local = list(set(local + grupos[grupo]))
+    local.sort()
+    return local
+
+#px.set_mapbox_access_token("pk.eyJ1Ijoicm1jbnJpYmVpcm8iLCJhIjoiY2s4MHh5b3ZiMGtsbTNkcGFuazR1dWc4diJ9._aDTNPlmw3Nt6QSMm3YgmQ")
+
 
 FINBRA_ = PATH.joinpath("data/finbra_desp.csv")
 FINBRA = pd.read_csv(FINBRA_, sep=";",index_col=False)
 
 ROYALTIES_ = PATH.joinpath("data/royalties.csv")
 ROYALTIES = pd.read_csv(ROYALTIES_, sep=";",index_col=False)
+ROYALTIES['municipio'] = ROYALTIES['municipio'].apply(remover_acentos)
 
 ROYALTIESDET_ = PATH.joinpath("data/royalties_detalhe.csv")
 ROYALTIESDET = pd.read_csv(ROYALTIESDET_, sep=";",index_col=False)
@@ -70,13 +103,6 @@ OUTROS_ = PATH.joinpath("data/outroslinks.xlsx")
 OUTROS = pd.read_excel(OUTROS_)
 
 
-# Create MUNICIPIOS
-MUNICIPIOS = []
-NUM_MUN = len(RJ_MUN_GEOJSON["features"])
-for i in range(NUM_MUN):
-    MUNICIPIOS.append(RJ_MUN_GEOJSON["features"][i]["properties"]["name"])
-
-NUPEC = ['Areal','Armação dos Búzios','Casimiro de Abreu','Comendador Levy Gasparian','Iguaba Grande','Miguel Pereira','Paraíba do Sul','Quissamã','Rio Claro','Rio das Flores','São Pedro da Aldeia', 'Sapucaia','Saquarema','Três Rios']
 
 	
 # 'Vassouras','Paty dos Alferes',
@@ -104,15 +130,13 @@ opt_soc = {	'IDHM':{ 		'label':'IDH Municipal', 				'hover':'nome', 			'name':'I
 
 # Graphs
 #@cache.memoize(timeout=timeout)  # in seconds
-def graf_soc(local=NUPEC, funcao='GINI'):
-	if 'NUPEC' in local:
-		local = [remover_acentos(x).upper() for x in list(set(list(NUPEC) + list(local)))]
+def graf_soc(local='NUPEC', funcao='GINI'):
 	df = opt_soc[funcao]['filename']
-	mmin,mmax = min(df[opt_soc[funcao]['col']]),max(df[opt_soc[funcao]['col']])
 	df['MUN'] =df[opt_soc[funcao]['hover']].apply(lambda x: remover_acentos(x).upper())
-	if (type(local) == list) and (len(local)>0):
-		local = [remover_acentos(x).upper() for x in local]
+	local = trata_local(local)
+	if len(local)>0:
 		df = df.loc[df['MUN'].isin(local)]
+	mmin,mmax = min(df[opt_soc[funcao]['col']]),max(df[opt_soc[funcao]['col']])
 	fig = px.choropleth_mapbox(df, geojson=RJ_MUN_GEOJSON, locations=opt_soc[funcao]['hover'],
 							featureidkey = 'properties.name',
 							color=opt_soc[funcao]['col'],
@@ -120,9 +144,10 @@ def graf_soc(local=NUPEC, funcao='GINI'):
 							color_continuous_scale="YlGn",
 							range_color=(mmin, mmax),
 							mapbox_style="carto-positron",
-							zoom=6, center=dict(lat=-22.158536, lon=-42.684229),
+							zoom=7, center=dict(lat=-22.158536, lon=-42.684229),
 							opacity=0.5,
 							animation_frame='ano',
+							height=700,
 							labels={opt_soc[funcao]['col']:opt_soc[funcao]['label']}
                           	)
 	texto = f"""<b>{opt_soc[funcao]['label']}</b><br>fonte: {opt_soc[funcao]['fonte']}<br>"""
@@ -140,34 +165,35 @@ def graf_soc(local=NUPEC, funcao='GINI'):
 #@cache.memoize(timeout=timeout)  # in seconds
 def graf_fin_1(local="",funcao="Despesas Exceto Intraorçamentárias"):
 	df = FINBRA
-	if (type(local) == list) and (len(local)>0):
-		local2 = [remover_acentos(x) for x in local]
-		df = df.loc[df['municipio'].isin(local2)]
+	local = trata_local(local)
+	if len(local)>0:
+		df = df.loc[df['municipio'].isin(local)]
 	fig =  px.line(df, x="ano", y=funcao, color='municipio', title="Graf. 1 - Evolução Anual de Despesas")
 	return fig
  
 
 def graf_fin_2(local="",funcao1="10 - Saúde", funcao2="12 - Educação"):
 	df = FINBRA
-	if (type(local) == list) and (len(local)>0):
-		local2 = [remover_acentos(x) for x in local]
-		df = df.loc[df['municipio'].isin(local2)]
+	local = trata_local(local)
+	if len(local)>0:
+		df = df.loc[df['municipio'].isin(local)]
 	fig =  px.scatter(df, x=funcao1, y=funcao2, color="municipio", trendline="ols", hover_data=['municipio','ano'], title="Graf. 2 - Correlação entre dois tipos de Despesas por função")
 	return fig  
 
 
 def graf_fin_3(local="",funcao1="total", funcao2="Despesas Correntes"):
 	df = EFICIENCIA
-	if (type(local) == list) and (len(local)>0):
-		local2 = [remover_acentos(x) for x in local]
-		df = df.loc[df['municipio'].isin(local2)]
+	local = trata_local(local)
+	if len(local)>0:
+		df = df.loc[df['municipio'].isin(local)]
 	fig =  px.scatter(df, x=funcao1, y=funcao2, color="municipio", trendline="ols", hover_data=['municipio','ano'], title="Graf. 3 - Correlação entre dois tipos de Despesas")
 	return fig  
 
 
-def graf_roy_1(local):
+def graf_roy_1(local='NUPEC'):
 	df = ROYALTIES 
-	if (type(local) == list) and (len(local)>0):
+	local = trata_local(local)
+	if len(local)>0:
 		df = df.loc[df['municipio'].isin(local)]
 	fig =  px.line(df, x='ano', y='Royalties', color="municipio", hover_data=['municipio','ano'], title="Graf. 1 - Evolução Anual de Royalties")
 	fig.update_layout(xaxis = dict(tickmode = 'linear',dtick = 1))
@@ -175,7 +201,8 @@ def graf_roy_1(local):
 
 def graf_roy_2(local):
 	df = ROYALTIES
-	if (type(local) == list) and (len(local)>0):
+	local = trata_local(local)
+	if len(local)>0:
 		df = df.loc[df['municipio'].isin(local)]
 	fig =  px.line(df, x='ano', y='royalties per capita',  color="municipio", hover_data=['municipio','ano'], title="Graf. 2 - Evolução Anual de Royalties per capita")
 	fig.update_layout(xaxis = dict(tickmode = 'linear',dtick = 1))
@@ -183,8 +210,8 @@ def graf_roy_2(local):
 
 def graf_roy_3(local,detalhe="Total Geral"):
 	df = ROYALTIESDET
-	local = [remover_acentos(x).upper() for x in local]
-	if (type(local) == list) and (len(local)>0):
+	local = trata_local(local)
+	if len(local)>0:
 		df = df.loc[df['municipio'].isin(local)]
 	fig =  px.line(df, x='ano', y=detalhe,  color="municipio", hover_data=['municipio','ano'], title="Graf. 3 - Evolução Anual de Royalties por tipo")
 	fig.update_layout(xaxis = dict(tickmode = 'linear',dtick = 1))
@@ -192,7 +219,8 @@ def graf_roy_3(local,detalhe="Total Geral"):
 
 def graf_ods_1(local):
 	df = ROYALTIES
-	if (type(local) == list) and (len(local)>0):
+	local = trata_local(local)
+	if len(local)>0:
 		df = df.loc[df['municipio'].isin(local)]
 	fig =  px.density_heatmap(df, x='ano', z='royalties per capita',  y="municipio", hover_data=['municipio','ano'], title="Graf. 1 - Metas ODS")
 	fig.update_layout(xaxis = dict(tickmode = 'linear',dtick = 1))
@@ -200,7 +228,8 @@ def graf_ods_1(local):
 
 def graf_ods_2(local):
 	df = ROYALTIES
-	if (type(local) == list) and (len(local)>0):
+	local = trata_local(local)
+	if len(local)>0:
 		df = df.loc[df['municipio'].isin(local)]
 	fig =  px.density_heatmap(df, x='ano', z='royalties per capita',  y="municipio", hover_data=['municipio','ano'], title="Graf. 1 - Metas ODS")
 	fig.update_layout(xaxis = dict(tickmode = 'linear',dtick = 1))
@@ -208,15 +237,16 @@ def graf_ods_2(local):
 
 def graf_saude_1(local):
 	df = SAUDE
-	if (type(local) == list) and (len(local)>0):
-		local2 = [remover_acentos(x).upper() for x in local]
-		df = df.loc[df['municipio'].isin(local2)]
+	local = trata_local(local)
+	if len(local)>0:
+		df = df.loc[df['municipio'].isin(local)]
 	fig = px.scatter(df, x='pop', y='saude', color='municipio', hover_data=['municipio','ano'], title="Graf. 1 -  Gasto de saúde per capita x População em 2019")
 	return fig
 
 def graf_saude_2(local, funcao='obitopor100k'):
 	df = SAUDE
-	if (type(local) == list) and (len(local)>0):
+	local = trata_local(local)
+	if len(local)>0:
 		local2 = [remover_acentos(x).upper() for x in local]
 		df = df.loc[df['municipio'].isin(local2)]
 	fig = px.scatter(df, x='saudepop', y=funcao, color='municipio',  hover_data=['municipio','ano'], title="Graf. 2 - Indicador selecionado x Gasto de saúde per capita")

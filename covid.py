@@ -25,34 +25,3 @@ df2.to_csv('app/data/saude.csv', index=False)
 #import plotly.express as px
 # %%
 #px.scatter(df2, x='saudepop', y='letalidade', color="municipio", trendline="ols", hover_data=['municipio','casos','obitos'], title="Graf. 1 - Letalidade x Gasto de saúde per capita")
-from unicodedata import normalize
-
-def remover_acentos(txt):
-	return normalize('NFKD', txt).encode('ASCII', 'ignore').decode('ASCII').upper()
-
-NUPEC = ['Areal','Armação dos Búzios','Casimiro de Abreu','Comendador Levy Gasparian','Iguaba Grande','Miguel Pereira','Paraíba do Sul','Quissamã','Rio Claro','Rio das Flores','São Pedro da Aldeia', 'Sapucaia','Saquarema','Três Rios']
-
-CENTRO = ['Paty do Alferes','Vassouras','Mendes','Barra do Piraí','Engenheiro Paulo de Frontin','Piraí','Paracambi','São José do Vale do Rio Preto','Valença','Areal','Comendador Levy Gasparian','Miguel Pereira','Paraíba do Sul','Rio Claro','Rio das Flores', 'Sapucaia','Três Rios']
-
-NORTE = ['Conceição de Macabu','Rio Bonito','Silva Jardim','Rio das Ostras','Carapebus','Arraial do Cabo','Araruama','Cabo Frio','Armação dos Búzios','Casimiro de Abreu','Iguaba Grande','Quissamã','São Pedro da Aldeia','Saquarema']
-
-grupos = {  'NUPEC': [remover_acentos(x) for x in NUPEC],
-            'CENTRO': [remover_acentos(x) for x in CENTRO],
-            'NORTE': [remover_acentos(x) for x in NORTE]}
-
-def trata_local(local):
-    if type(local) == str:
-        local = [local]
-    local = [remover_acentos(x) for x in local]
-    local = list(set(local))
-    for grupo in ['NUPEC', 'NORTE', 'CENTRO']:
-        if grupo in local:
-            local.remove(grupo)
-            local = list(set(local + grupos[grupo]))
-    local.sort()
-    return local
-
-# %%
-trata_local(['nupéc','Rio de Janeiro'])
-# %%
-    
