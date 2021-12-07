@@ -58,7 +58,6 @@ FINBRA = pd.read_csv(FINBRA_, sep=";",index_col=False)
 
 ROYALTIES_ = PATH.joinpath("data/royalties.csv")
 ROYALTIES = pd.read_csv(ROYALTIES_, sep=";",index_col=False)
-ROYALTIES['municipio'] = ROYALTIES['municipio'].apply(remover_acentos)
 
 ROYALTIESDET_ = PATH.joinpath("data/royalties_detalhe.csv")
 ROYALTIESDET = pd.read_csv(ROYALTIESDET_, sep=";",index_col=False)
@@ -132,7 +131,7 @@ opt_soc = {	'IDHM':{ 		'label':'IDH Municipal', 				'hover':'nome', 			'name':'I
 #@cache.memoize(timeout=timeout)  # in seconds
 def graf_soc(local='NUPEC', funcao='GINI'):
 	df = opt_soc[funcao]['filename']
-	df['MUN'] =df[opt_soc[funcao]['hover']].apply(lambda x: remover_acentos(x).upper())
+	df['MUN'] =df[opt_soc[funcao]['hover']].apply(remover_acentos)
 	local = trata_local(local)
 	if len(local)>0:
 		df = df.loc[df['MUN'].isin(local)]
@@ -192,18 +191,20 @@ def graf_fin_3(local="",funcao1="total", funcao2="Despesas Correntes"):
 
 def graf_roy_1(local='NUPEC'):
 	df = ROYALTIES 
+	df['MUN'] = df['municipio'].apply(remover_acentos)
 	local = trata_local(local)
 	if len(local)>0:
-		df = df.loc[df['municipio'].isin(local)]
+		df = df.loc[df['MUN'].isin(local)]
 	fig =  px.line(df, x='ano', y='Royalties', color="municipio", hover_data=['municipio','ano'], title="Graf. 1 - Evolução Anual de Royalties")
 	fig.update_layout(xaxis = dict(tickmode = 'linear',dtick = 1))
 	return fig  
 
 def graf_roy_2(local):
-	df = ROYALTIES
+	df = ROYALTIES 
+	df['MUN'] = df['municipio'].apply(remover_acentos)
 	local = trata_local(local)
 	if len(local)>0:
-		df = df.loc[df['municipio'].isin(local)]
+		df = df.loc[df['MUN'].isin(local)]
 	fig =  px.line(df, x='ano', y='royalties per capita',  color="municipio", hover_data=['municipio','ano'], title="Graf. 2 - Evolução Anual de Royalties per capita")
 	fig.update_layout(xaxis = dict(tickmode = 'linear',dtick = 1))
 	return fig  

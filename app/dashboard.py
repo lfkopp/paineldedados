@@ -209,7 +209,7 @@ financeiro = html.Div([
                 
                 html.Div([   ## grafico 2
                      
-                     dcc.Graph(className = "graph", id = 'my-graph-fin-2', figure = graf_fin_2(NUPEC)),
+                     dcc.Graph(className = "graph", id = 'my-graph-fin-2', figure = graf_fin_2('NUPEC')),
 
                      html.Div([      ### dropddown
                                 dcc.Dropdown(
@@ -350,7 +350,7 @@ royalties = html.Div([
                     html.Div([  ## grafico 1
                  
                            
-                                    dcc.Graph(className = "graph", id = 'my-graph-roy-1', figure = graf_roy_1(NUPEC)),
+                                    dcc.Graph(className = "graph", id = 'my-graph-roy-1', figure = graf_roy_1('NUPEC')),
 
   
                                             html.P("Total de receitas oriundas dos Royalties."),
@@ -365,7 +365,7 @@ royalties = html.Div([
                 html.Div([  ## grafico 2
                  
                            
-                                    dcc.Graph(className = "graph", id = 'my-graph-roy-2', figure = graf_roy_2(NUPEC)),
+                                    dcc.Graph(className = "graph", id = 'my-graph-roy-2', figure = graf_roy_2('NUPEC')),
 
   
                                             html.P("Total de receita de Royalties normalizado pela população do município."),
@@ -393,7 +393,7 @@ royalties = html.Div([
                                         disabled = False
                                     ),
                            
-                                    dcc.Graph(className = "graph", id = 'my-graph-roy-3', figure = graf_roy_3(NUPEC)),
+                                    dcc.Graph(className = "graph", id = 'my-graph-roy-3', figure = graf_roy_3('NUPEC')),
 
   
 
