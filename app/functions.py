@@ -58,6 +58,7 @@ FINBRA = pd.read_csv(FINBRA_, sep=";",index_col=False)
 
 ROYALTIES_ = PATH.joinpath("data/royalties.csv")
 ROYALTIES = pd.read_csv(ROYALTIES_, sep=";",index_col=False)
+ROYALTIES['royalties per capita'] = ROYALTIES['Royalties'] /ROYALTIES['pop']
 
 ROYALTIESDET_ = PATH.joinpath("data/royalties_detalhe.csv")
 ROYALTIESDET = pd.read_csv(ROYALTIESDET_, sep=";",index_col=False)
