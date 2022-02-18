@@ -293,7 +293,7 @@ def fotos_prof(app,html):
 		result.append(html.Div([
                     html.Img(src = app.get_asset_url('pessoas/'+p2+'.jpg'),id = p2+"-image",title = p, className = "fotinha"),
                     html.P([p])],style = {'margin':'6px'}))
-	return result
+	return result 
 
 def fotos_assist(app,html):
 	result = []
