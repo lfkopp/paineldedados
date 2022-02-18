@@ -60,6 +60,11 @@ ROYALTIES_ = PATH.joinpath("data/royalties.csv")
 ROYALTIES = pd.read_csv(ROYALTIES_, sep=";",index_col=False)
 ROYALTIES['royalties per capita'] = ROYALTIES['Royalties'] /ROYALTIES['pop']
 
+
+ROYALTIESSIGEP_ = PATH.joinpath("data/royalties_sigep.xlsx")
+ROYALTIESSIGEP = pd.read_excel(ROYALTIESSIGEP_)
+
+
 ROYALTIESDET_ = PATH.joinpath("data/royalties_detalhe.csv")
 ROYALTIESDET = pd.read_csv(ROYALTIESDET_, sep=";",index_col=False)
 
@@ -217,6 +222,19 @@ def graf_roy_3(local,detalhe="Total Geral"):
 	if len(local)>0:
 		df = df.loc[df['municipio'].isin(local)]
 	fig =  px.line(df, x='ano', y=detalhe,  color="municipio", hover_data=['municipio','ano'], title="Graf. 3 - Evolução Anual de Royalties por tipo")
+	fig.update_layout(xaxis = dict(tickmode = 'linear',dtick = 1))
+	return fig  
+
+
+def graf_roy_4(local):
+	df = ROYALTIESSIGEP 
+	df['MUN'] = df['municipio'].apply(remover_acentos)
+	df['MUN'] = df['MUN'].str.replace('-RJ','')
+	print(df.head())
+	local = trata_local(local)
+	if len(local)>0:
+		df = df.loc[df['MUN'].isin(local)]
+	fig =  px.line(df, x='ano', y='valor',  color="municipio", hover_data=['municipio','ano'], title="Graf. 4 - Previsão de Receita de Royalties")
 	fig.update_layout(xaxis = dict(tickmode = 'linear',dtick = 1))
 	return fig  
 

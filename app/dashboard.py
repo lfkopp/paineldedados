@@ -412,6 +412,20 @@ html.P("https://www.gov.br/economia/pt-br/assuntos/noticias/2019/12/governo-real
                                         }
                                     ),
                 
+                html.Div([  ## grafico 4
+                 
+                           
+                                    dcc.Graph(className = "graph", id = 'my-graph-roy-4', figure = graf_roy_4('NUPEC')),
+
+  
+                                            html.P("Total de receita de Royalties previsto para os próximos anos"),
+                                            html.P("Fonte: ANP SIGEP")
+                                        ],
+                                        className = "pretty_container", style = {
+                                            'width': '100%',
+                                            'margin': '5px'
+                                        }
+                                    ),
                  
                 ],
             className = "row container-display",
@@ -625,6 +639,10 @@ def update_graph_roy_2(local):
 def update_graph_roy_3(local,detalhe):
     return graf_roy_3(local,detalhe)
 
+
+@app.callback(Output('my-graph-roy-4','figure'),[Input('filtro-local-roy','value')])
+def update_graph_roy_4(local):
+    return graf_roy_4(local)
 
 #@app.callback([Output('my-graph-ods-1','figure'),Output('my-graph-ods-2','figure')],[Input('filtro-local-ods','value')])
 #def update_graph_ods_1(local):
