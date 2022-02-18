@@ -279,7 +279,7 @@ def fotos_prof(app,html):
 
 def fotos_assist(app,html):
 	result = []
-	profs = ['Luis Filipe Kopp', 'Helena Dias', 'Vanessa', 'Matheus Paiva']
+	profs = ['Luis Filipe Kopp', 'Helena Dias', 'Vanessa', 'Matheus Paiva', 'Alice Caldas']
 	for p in profs:
 		p2 = p.replace(' ','_')
 		result.append(html.Div([
