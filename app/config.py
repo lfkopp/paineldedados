@@ -3,7 +3,6 @@ import dash
 import flask
 from flask_caching import Cache
 
-
 # Supress Pandas Warnings
 import warnings
 warnings.filterwarnings("ignore")
