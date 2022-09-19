@@ -1,10 +1,10 @@
+from flask import Flask, render_template
 
-import sys
-sys.path.append('./app')
+app = Flask(__name__)
 
-from app.dashboard import app
-from app.config import server
-
+@app.route('/')
+def inicial():
+    return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run_server(host='0.0.0.0', port=5000)
+    app.run()
