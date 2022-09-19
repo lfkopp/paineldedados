@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def inicial():
-    return render_template('index.html')
+    return "servidor funcionando"
 
 if __name__ == '__main__':
     app.run()
